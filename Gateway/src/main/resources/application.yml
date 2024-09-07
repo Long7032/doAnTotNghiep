@@ -1,0 +1,11 @@
+spring: 
+  cloud:
+    gateway:
+      routes:
+        - id: categoryService
+          uri: http://localhost:5820
+          predicates:
+            - Path=/api/categories/**
+        
+        
+      

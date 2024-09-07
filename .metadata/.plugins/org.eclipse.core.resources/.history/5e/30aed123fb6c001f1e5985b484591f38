@@ -1,0 +1,60 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.Account;
+import com.example.demo.service.AccountService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
+@RestController
+@RequestMapping("/api/accounts")
+public class AccountController {
+
+	@Autowired
+	private AccountService accountService;
+	
+	@PostMapping("/register")
+	public Account saveAccount(@RequestBody Account account) {
+		//TODO: process POST request
+		
+		return accountService.saveUser(account);
+	}
+	
+	@DeleteMapping("/{id}")
+	public String deleteAccount() {
+		
+		return "";
+	}
+	
+	@PutMapping("/{id}")
+	public String updateAccount(@PathVariable int id) {
+		System.out.println(id);
+		return "update";
+	}
+	
+	//	GET http://localhost:5821/accounts/?userName=abc&password=123
+	@GetMapping("/login")
+	public Account getAccount(@RequestParam String userName, @RequestParam String password) {
+		System.out.println(userName + " : " + password);
+		
+		return accountService.getAccount(userName, password);
+	}
+	
+	@GetMapping("/")
+	public List<Account> getAccounts() {
+		System.out.println(accountService.getAccounts());
+		return accountService.getAccounts();
+	}
+}
