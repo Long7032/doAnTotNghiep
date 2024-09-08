@@ -6,6 +6,10 @@ spring:
           uri: http://localhost:5820
           predicates:
             - Path=/api/categories/**
+        - id: userService
+          uri: http://localhost:5821
+          predicates:
+            - Path=/api/users/**
         
         
       
