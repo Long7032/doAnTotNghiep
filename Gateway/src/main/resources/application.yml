@@ -14,6 +14,10 @@ spring:
           uri: http://localhost:5822
           predicates:
             - Path=/api/otps/**
+        - id: otpService
+          uri: http://localhost:5823
+          predicates:
+            - Path=/api/employees/**
         
         
       
