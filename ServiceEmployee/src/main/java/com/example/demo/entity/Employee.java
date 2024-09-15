@@ -15,9 +15,10 @@ import jakarta.persistence.Table;
 @Table(name = "employees")
 public class Employee {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
 	private String id; // yyyyMMddHHmmss
+	@Column(name = "employee_avatar_url")
+	private String avatar;
 	@Column(name = "employee_name", nullable = false)
 	private String name;
 	@Column(name = "employee_gender", nullable = false)
@@ -28,7 +29,7 @@ public class Employee {
 	private String email;
 	@Column(name = "employee_telephone", nullable = false, unique = true)
 	private String telephone;
-	@Column(name = "address", columnDefinition = "jsonb")
+	@Column(name = "employee_address", columnDefinition = "jsonb")
 	@JdbcTypeCode(SqlTypes.JSON)
 	private HashMap<String, String> address;
 	@Column(name = "status_employee")
@@ -39,22 +40,24 @@ public class Employee {
 		if (status == null)
 			status = "active";
 	}
-	
+
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Employee(String id, String name, String gender, String birtday, String email, String telephone,
-			HashMap<String, String> address) {
+	public Employee(String id, String avatar, String name, String gender, String birthday, String email,
+			String telephone, HashMap<String, String> address, String status) {
 		super();
 		this.id = id;
+		this.avatar = avatar;
 		this.name = name;
 		this.gender = gender;
-		this.birthday = birtday;
+		this.birthday = birthday;
 		this.email = email;
 		this.telephone = telephone;
 		this.address = address;
+		this.status = status;
 	}
 
 	public String getId() {
@@ -121,12 +124,19 @@ public class Employee {
 		this.status = status;
 	}
 
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", name=" + name + ", gender=" + gender + ", birthday=" + birthday + ", email="
-				+ email + ", telephone=" + telephone + ", address=" + address + ", status=" + status + "]";
+	public String getAvatar() {
+		return avatar;
 	}
 
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", avatar=" + avatar + ", name=" + name + ", gender=" + gender + ", birthday="
+				+ birthday + ", email=" + email + ", telephone=" + telephone + ", address=" + address + ", status="
+				+ status + "]";
+	}
 
 }
