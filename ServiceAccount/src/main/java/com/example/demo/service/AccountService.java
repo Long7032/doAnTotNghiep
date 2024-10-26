@@ -16,41 +16,45 @@ public class AccountService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public Account saveUser(Account account) {
-		System.out.printf("Service: \s", account);
+	public Account saveAccount(Account account) {
+		System.out.println("Account Service - Save Account");
 		String encodedPassword = passwordEncoder.encode(account.getPassword());
 		account.setPassword(encodedPassword);
-		System.out.println("Service: " + account);
-		return accountRepository.save(account);
+		return  accountRepository.save(account);
 	}
 
 	public List<Account> getAccounts() {
+		System.out.println("Account Service - Get All Accounts");
 		return accountRepository.findAll();
 	}
 
-	public Account getAccount(String email, String password) {
-		Account rs = null;
-		rs = accountRepository.getAccount(email);
-		if (rs != null) {
-			System.out.println("Account Service: ");
-			System.out.println(password);
-			System.out.println(rs);
-
-			System.out.println(passwordEncoder.matches(password, rs.getPassword()));
-			return rs;
-		}
-		return rs;
-	}
-
-	public Account changePassword(Account account) {
+	public Account getAccount(Account account) {
+		System.out.println("Account Service - Get Account By Email And Password");
 		Account rs = null;
 		rs = accountRepository.getAccount(account.getUserName());
-		String encodePassword = passwordEncoder.encode(account.getPassword());
-		rs.setPassword(encodePassword);
-		return accountRepository.saveAndFlush(rs);
+		return rs;
 	}
 	
 	public Account updateAccount(Account account) {
-		return accountRepository.saveAndFlush(account);
+		System.out.println("Account Service - Update Account");
+		Account rs = null;
+		rs = accountRepository.getAccount(account.getUserName());
+		if(rs != null) {
+			if(!account.getPassword().isEmpty()) {
+				String encodePassword = passwordEncoder.encode(account.getPassword());
+				rs.setPassword(encodePassword);
+				return accountRepository.saveAndFlush(rs);
+			}
+		}
+		return null;
+	}
+	
+	public Account checkAccount(Account account) {
+		Account rs = null;
+		rs = accountRepository.getAccount(account.getUserName());
+		if(rs != null) {
+			return rs;
+		}
+		return null;
 	}
 }

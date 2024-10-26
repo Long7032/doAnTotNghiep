@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,14 +28,17 @@ public class OTPController {
 	}
 
 	@PostMapping("/{email}")
-	public String generateOTP(@PathVariable String email) throws ParseException {
-		return otpService.generateOTP(email);
+	public ResponseEntity<Object> generateOTP(@PathVariable String email) throws ParseException {
+
+		return ResponseEntity.status(200).body(otpService.generateOTP(email));
 	}
 
 	@PostMapping("/check")
 	public String checkOTP(@RequestBody OTP otp) {
 		System.out.println(otp);
-		return otpService.checkingOTP(otp.getEmailUser(), otp.getMessage());
+		String rsCheckOTP = otpService.checkingOTP(otp.getEmailUser(), otp.getMessage());
+		System.out.println(rsCheckOTP);
+		return rsCheckOTP;
 	}
 
 }

@@ -12,15 +12,12 @@ import jakarta.persistence.Table;
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_category")
+	@Column(name = "category_id")
 	private int id;
-	@Column(name="name_category", nullable = false, unique = true)
+	@Column(name="category_name", nullable = false, unique = true)
 	private String name;
-	public Category(int id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
+	@Column(name="category_status")
+	private String status;
 	public Category() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -41,10 +38,17 @@ public class Category {
 		super();
 		this.name = name;
 	}
+	public final String getStatus() {
+		return status;
+	}
+	public final void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + "]";
+		return "Category [id=" + id + ", name=" + name + ", status=" + status + "]";
 	}
+	
 	
 	
 }

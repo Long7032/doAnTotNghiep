@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,36 +25,60 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/{email}")
-	public User getUser(@PathVariable String email) {
-		System.out.println(email);
-		return userService.getUser(email);
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> getUser(@PathVariable String id) {
+		System.out.println("User Controller - Get User By ID");
+		
+		Optional<User> user = userService.getUser(id);
+		if (user != null) {
+			return ResponseEntity.status(200).body(user);
+		}
+		return ResponseEntity.status(400).body(new String("User Not Found"));
 	}
 
 	@PostMapping("/")
-	public User saveUser(@RequestBody User user) {
+	public ResponseEntity<Object> saveUser(@RequestBody User user) {
+		System.out.println("User Controller - Save User");
 		// TODO: process POST request
-
-		return userService.saveUser(user);
+		System.out.println(user);
+//		return ResponseEntity.status(500).body(userService.saveUser(user));
+		if (userService.saveUser(user) == null) {
+			return ResponseEntity.status(500).body(new String("Fail"));
+		}
+		return ResponseEntity.status(200).body(userService.saveUser(user));
 	}
 
 	@PutMapping("/")
-	public User updateUser(@RequestBody User user) {
-		// TODO: process POST request
-
-		return userService.saveUser(user);
+	public ResponseEntity<Object> updateUser(@RequestBody User user) {
+		System.out.println("User Controller - Update User");
+		System.out.println(user);
+//		return ResponseEntity.status(500).body(userService.saveUser(user));
+		if (userService.updateUser(user) == null) {
+			return ResponseEntity.status(500).body(new String("Fail"));
+		}
+		return ResponseEntity.status(200).body(userService.saveUser(user));
 	}
 
 	@DeleteMapping("/")
-	public void deleteUser(@RequestBody User user) {
+	public ResponseEntity<Object> deleteUser(@RequestBody User user) {
 		// TODO: process POST request
-
-		userService.saveUser(user);
+		System.out.println("User Controller - Delete User");
+		return ResponseEntity.status(200).body(userService.deleteUser(user));
 	}
 
-	@GetMapping("/")
-	public List<User> getUsers() {
-		return userService.getUsers();
+	@GetMapping("/number")
+	public double getUsers() {
+		return userService.getUsers().toArray().length;
 	}
 
+	@GetMapping("/list/employee/{page}/{size}")
+	public List<User> getListUsers(@PathVariable int page, @PathVariable int size) {
+		System.out.println("User Controller - Get User By Page");
+		return userService.getUserInRange(page, size);
+	}
+	@GetMapping("/{page}/{size}")
+	public List<User> getListUsersByEmployeeRole(@PathVariable int page, @PathVariable int size) {
+		System.out.println("User Controller - Get User By Employee Role And Page");
+		return userService.getUserInRange(page, size);
+	}
 }

@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -16,7 +17,7 @@ import jakarta.persistence.Table;
 public class Employee {
 	@Id
 	@Column(name = "employee_id")
-	private String id; // yyyyMMddHHmmss
+	private String id; // NVyyyyMMddHHmmss
 	@Column(name = "employee_avatar_url")
 	private String avatar;
 	@Column(name = "employee_name", nullable = false)
@@ -32,13 +33,23 @@ public class Employee {
 	@Column(name = "employee_address", columnDefinition = "jsonb")
 	@JdbcTypeCode(SqlTypes.JSON)
 	private HashMap<String, String> address;
-	@Column(name = "status_employee")
+	@Column(name = "employee_time_create")
+	private LocalDateTime timeCreate;
+	@Column(name = "employee_position")
+	private String position;
+	@Column(name = "employee_status")
 	private String status;
 
 	@PrePersist
 	protected void onCreate() {
 		if (status == null)
 			status = "active";
+		if (avatar == null)
+			avatar = "https://cdn.kona-blue.com/upload/kona-blue_com/post/images/2024/09/18/457/avatar-mac-dinh-12.jpg";
+		if (timeCreate == null) {
+			timeCreate = LocalDateTime.now();
+		}if (position == null)
+			status = "staff";
 	}
 
 	public Employee() {
@@ -47,7 +58,8 @@ public class Employee {
 	}
 
 	public Employee(String id, String avatar, String name, String gender, String birthday, String email,
-			String telephone, HashMap<String, String> address, String status) {
+			String telephone, HashMap<String, String> address, LocalDateTime timeCreate, String position,
+			String status) {
 		super();
 		this.id = id;
 		this.avatar = avatar;
@@ -57,6 +69,8 @@ public class Employee {
 		this.email = email;
 		this.telephone = telephone;
 		this.address = address;
+		this.timeCreate = timeCreate;
+		this.position = position;
 		this.status = status;
 	}
 
@@ -66,6 +80,14 @@ public class Employee {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	public String getName() {
@@ -82,6 +104,14 @@ public class Employee {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 
 	public String getEmail() {
@@ -108,12 +138,20 @@ public class Employee {
 		this.address = address;
 	}
 
-	public String getBirthday() {
-		return birthday;
+	public LocalDateTime getTimeCreate() {
+		return timeCreate;
 	}
 
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
+	public void setTimeCreate(LocalDateTime timeCreate) {
+		this.timeCreate = timeCreate;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	public String getStatus() {
@@ -124,19 +162,11 @@ public class Employee {
 		this.status = status;
 	}
 
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", avatar=" + avatar + ", name=" + name + ", gender=" + gender + ", birthday="
-				+ birthday + ", email=" + email + ", telephone=" + telephone + ", address=" + address + ", status="
-				+ status + "]";
+				+ birthday + ", email=" + email + ", telephone=" + telephone + ", address=" + address + ", timeCreate="
+				+ timeCreate + ", position=" + position + ", status=" + status + "]";
 	}
 
 }

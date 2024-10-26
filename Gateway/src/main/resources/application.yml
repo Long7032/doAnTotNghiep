@@ -14,10 +14,56 @@ spring:
           uri: http://localhost:5822
           predicates:
             - Path=/api/otps/**
-        - id: otpService
+        - id: employeeService
           uri: http://localhost:5823
           predicates:
             - Path=/api/employees/**
+        - id: accountService
+          uri: http://localhost:5824
+          predicates:
+            - Path=/api/accounts/**
+        - id: authService
+          uri: http://localhost:5825
+          predicates:
+            - Path=/api/auth/**
+        - id: productService
+          uri: http://localhost:5826
+          predicates:
+            - Path=/api/products/**
+        - id: productVariantService
+          uri: http://localhost:5827
+          predicates:
+            - Path=/api/product-variants/**
+        - id: orderService
+          uri: http://localhost:5828
+          predicates:
+            - Path=/api/orders/**
+        - id: orderDetailService
+          uri: http://localhost:5829
+          predicates:
+            - Path=/api/order-details/**
+        - id: orderStatusService
+          uri: http://localhost:5830
+          predicates:
+            - Path=/api/order-statuss/**
+        - id: catalogService
+          uri: http://localhost:5831
+          predicates:
+            - Path=/api/catalogs/**
+        - id: postService
+          uri: http://localhost:5832
+          predicates:
+            - Path=/api/posts/**
+        - id: productPromotionService
+          uri: http://localhost:5833
+          predicates:
+            - Path=/api/promotion-products/**
+        - id: cartService
+          uri: http://localhost:5834
+          predicates:
+            - Path=/api/carts/**
+       
+            
         
         
       
