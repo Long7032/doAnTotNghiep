@@ -12,8 +12,8 @@ import jakarta.persistence.Table;
 @Entity
 @IdClass(IDOrderStatus.class)
 @Table(name="order-statuss", indexes = {
-		@Index(name="idx_id_order", columnList = "order_status_id_order")
-//		@Index(name="idx_time", columnList = "order_status_time"),
+		@Index(name="idx_id_order", columnList = "order_status_id_order"),
+		@Index(name="idx_time", columnList = "order_status_time")
 })
 public class OrderStatus {
 	@Id

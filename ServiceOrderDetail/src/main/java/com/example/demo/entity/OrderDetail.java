@@ -20,6 +20,9 @@ public class OrderDetail {
 	@Id
 	@Column(name = "order_detail_id_product")
 	private String idProduct;
+	@Id
+	@Column(name = "order_detail_size_product")
+	private String sizeProduct;
 	@Column(name = "order_detail_quantity_product")
 	private int quantity;
 	@Column(name = "order_detail_price_product")

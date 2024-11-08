@@ -15,7 +15,7 @@ public class ProductService {
 	@Autowired
 	public ProductRepository productRepository;
 
-	// Save Product Into DB
+	// ========== Save Product Into DB ==========
 	public Product saveProduct(Product product) {
 		Product p = null;
 		try {
@@ -28,45 +28,52 @@ public class ProductService {
 		return p;
 	}
 
-	// Delete Product By Bar Code
+	// ========== Delete Product By Bar Code ==========
 	public Product deleteProduct(Product product) {
-		Product rs = productRepository.getById(product.getBarcode());
+		Product rs = productRepository.findById(product.getBarcode()).orElseThrow();
 		productRepository.delete(rs);
 		return null;
 	}
 
-	// Update Product By Bar Code
+	// ========== Update Product By Bar Code ==========
 	public Product updateProduct(Product product) {
 		return productRepository.saveAndFlush(product);
 	}
 
-	// Get All Product
+	// ========== Get All Product ==========
 	public List<Product> getProducts() {
 		return productRepository.findAll();
 	}
 
-	// Get Product By Page And Size
+	// ========== Get Product By Page And Size ==========
 	public List<Product> getProductInRange(int page, int size) {
 		Pageable pageable = PageRequest.of(page - 1, size);
-		return productRepository.getProductInRange(pageable);
+		return productRepository.getProductsInRange(pageable);
 	}
 
-	// Get Product By Name
+	// ========== Get Products By Name ==========
 	public List<Product> getProductsByName(String name) {
 		return productRepository.getProductByName(name);
 	}
 
-	// Get Product By Category
-	public List<Product> getProductsByCategory(int id) {
-		System.out.println("Product Service - Get Product By Category");
-		System.out.println("Data Init: " + id);
-		List<Product> rs = productRepository.getProductByCategory(id);
-		System.out.println("Data Result" + rs);
+	// ========== Get Products By Category ==========
+	public List<Product> getProductsByCategory(String category) {
+		System.out.println("Product Service - Get All Products By Category");
+//		System.out.println("Data Init: " + id);
+		List<Product> rs = productRepository.getProductByCategory(category);
+//		System.out.println("Data Result" + rs);
 		return rs;
 	}
 
-	// Get Product By Bar code
+	public List<Product> getProductsByCategoryInRange(String id, int page, int size) {
+		System.out.println("Product Service - Get Products By Category In Range");
+		Pageable pageable = PageRequest.of(page - 1, size);
+		List<Product> rs = productRepository.getProductByCategoryInrange(id, pageable);
+		return rs;
+	}
+
+	// ========== Get Product By Bar Code ==========
 	public Product getProduct(Product product) {
 		return productRepository.getProductByBarcode(product.getBarcode());
-	}	
+	}
 }

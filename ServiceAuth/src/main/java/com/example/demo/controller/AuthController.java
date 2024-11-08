@@ -30,7 +30,24 @@ public class AuthController {
 	
 	@PostMapping("/authenticate")
 	public ResponseEntity<Object> authToken(@RequestBody AES aes) throws Exception {
-		return ResponseEntity.status(200).body(new String(jwtUtil.authenticate(aesUtil.decrypt(aes.getEncrytText()))));
+		System.out.println("Auth Controller - Authenticate");
+//		
+		// Encrypt AES
+		String encryptAES = aes.getEncrytText();
+		System.out.println("Encrypt AES: " + encryptAES);
+		
+		// Decrypt AES
+		String decryptAES = aesUtil.decrypt(encryptAES);
+		System.out.println("Decrypt AES: " + decryptAES);
+		
+		// Decrypt Token
+		String token = jwtUtil.authenticate(decryptAES);
+		System.out.println("Token: " + token);
+		
+		String id = jwtUtil.getIDFromToken(decryptAES);
+		
+		return ResponseEntity.status(200).body(new String(id));
+//		return ResponseEntity.status(200).body(new String(jwtUtil.authenticate(aesUtil.decrypt(aes.getEncrytText()))));
 	}
 	
 	

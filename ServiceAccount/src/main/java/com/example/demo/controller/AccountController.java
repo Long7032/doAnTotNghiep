@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,30 +41,19 @@ public class AccountController {
 		return ResponseEntity.status(200).body(rs);
 	}
 
-	@PutMapping("/")
-	public ResponseEntity<Object> updateAccount(@RequestBody Account account) {
-		System.out.println("Account Controller - Update - Data: " + account);
-		Account rs = null;
-		rs = accountService.updateAccount(account);
-		if (rs != null) {
-			return ResponseEntity.status(200).body("Success");
-		}
-		return ResponseEntity.status(401).body(new String("Fail"));
-	}
-
 	@GetMapping("/")
 	public List<Account> getAccounts() {
 		return accountService.getAccounts();
 	}
 
-	@PostMapping("/check")
-	public ResponseEntity<Object> checkAccount(@RequestBody Account account) {
-		System.out.println("Account Controller - Check - Data: " + account);
-		Account rs = accountService.checkAccount(account);
+	@PutMapping("/{type}")
+	public ResponseEntity<Object> updateAccountByType(@PathVariable String type, @RequestBody Account account) {
+		System.out.println("Account Controller - Update Account By Type - Data: " + account);
+		Account rs = accountService.updateAccountByType(type, account);
 		System.out.println(rs);
 		if (rs == null) {
 			return ResponseEntity.status(401).body(new String("Account Not Found !!!"));
 		}
-		return ResponseEntity.status(200).body(new String("Account Has Been Exists"));
+		return ResponseEntity.status(200).body(rs);
 	}
 }

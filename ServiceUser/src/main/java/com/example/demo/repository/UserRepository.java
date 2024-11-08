@@ -18,5 +18,4 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Query("SELECT u FROM User u WHERE u.role = '2'")
 	public List<User> getUsersByEmployeeRoleInRange(Pageable pageable);
 	
-//	@Query("SELECT u FROM User u where u.id not in (?1)")
 }

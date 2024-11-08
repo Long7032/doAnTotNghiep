@@ -43,6 +43,20 @@ public class UserService {
 
 		return userRepository.saveAndFlush(user);
 	}
+	
+	public User updateRoleForUser(User user, String option) {
+		System.out.println("User Service - Update Role User");
+		// Get User By ID
+		User rs = userRepository.findById(user.getId()).orElseThrow();
+
+		if(option.equals("upgrade")) {
+			rs.setRole("1");
+		} else if(option.equals("degrade")) {
+			rs.setRole("2");
+		}
+		System.out.println(rs);
+		return userRepository.saveAndFlush(rs);
+	}
 
 	public List<User> getUserInRange(int page, int size) {
 		System.out.println("User Service -  Get Users By Page");
@@ -73,4 +87,5 @@ public class UserService {
 		System.out.println("User Service -  Get Users By ID");
 		return userRepository.findById(id);
 	}
+	
 }

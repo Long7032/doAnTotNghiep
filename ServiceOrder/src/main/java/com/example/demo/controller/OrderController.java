@@ -26,7 +26,7 @@ public class OrderController {
 	@PostMapping("/")
 	public ResponseEntity<Object> saveOrder(@RequestBody Order order) {
 		// TODO: process POST request
-
+		System.out.println("Order Controller - Save Order");
 		return ResponseEntity.status(200).body(orderService.saveOrder(order));
 	}
 
@@ -53,8 +53,9 @@ public class OrderController {
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<Object> putMethodName(@RequestBody Order order) {
+	public ResponseEntity<Object> updateStatusOrder(@RequestBody Order order) {
 		// TODO: process PUT request
+		System.out.println("Order Controller - Update New Status Order");
 		return ResponseEntity.status(200).body(orderService.updateNewStatusOrder(order));
 	}
 

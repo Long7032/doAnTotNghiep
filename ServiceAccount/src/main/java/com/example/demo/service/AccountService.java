@@ -20,7 +20,7 @@ public class AccountService {
 		System.out.println("Account Service - Save Account");
 		String encodedPassword = passwordEncoder.encode(account.getPassword());
 		account.setPassword(encodedPassword);
-		return  accountRepository.save(account);
+		return accountRepository.save(account);
 	}
 
 	public List<Account> getAccounts() {
@@ -32,29 +32,35 @@ public class AccountService {
 		System.out.println("Account Service - Get Account By Email And Password");
 		Account rs = null;
 		rs = accountRepository.getAccount(account.getUserName());
-		return rs;
-	}
-	
-	public Account updateAccount(Account account) {
-		System.out.println("Account Service - Update Account");
-		Account rs = null;
-		rs = accountRepository.getAccount(account.getUserName());
-		if(rs != null) {
-			if(!account.getPassword().isEmpty()) {
-				String encodePassword = passwordEncoder.encode(account.getPassword());
-				rs.setPassword(encodePassword);
-				return accountRepository.saveAndFlush(rs);
-			}
-		}
-		return null;
-	}
-	
-	public Account checkAccount(Account account) {
-		Account rs = null;
-		rs = accountRepository.getAccount(account.getUserName());
-		if(rs != null) {
+		if (passwordEncoder.matches(account.getPassword(), rs.getPassword())) {
 			return rs;
 		}
 		return null;
+	}
+
+	public Account updateAccountByType(String option, Account account) {
+		System.out.println("Account Service - Update Account By Type");
+		Account rs = accountRepository.findById(account.getIdUser()).orElseThrow();
+		switch (option) {
+		case "all": {
+			rs.setUserName(account.getUserName());
+			String encodedPassword = passwordEncoder.encode(account.getPassword());
+			account.setPassword(encodedPassword);
+			break;
+		}
+		case "email": {
+			rs.setUserName(account.getUserName());
+			break;
+		}
+		case "password": {
+			String encodedPassword = passwordEncoder.encode(account.getPassword());
+			account.setPassword(encodedPassword);
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + option);
+		}
+
+		return accountRepository.saveAndFlush(rs);
 	}
 }

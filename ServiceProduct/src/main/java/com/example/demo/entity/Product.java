@@ -29,24 +29,27 @@ public class Product {
 	@Column(name = "product_price", nullable = false)
 	private double price;
 	@Column(name = "product_category_id", nullable = false)
-	private int idCategory;
+	private String idCategory;
 	@Column(name = "product_tax", nullable = false)
 	private int tax;
 	@Column(name = "product_status", nullable = false)
 	private String status;
+
 	@PrePersist
 	protected void onCreate() {
-		
-		if(status == null) {
+
+		if (status == null) {
 			status = "active";// Or Inactive
 		}
 	}
+
 	public Product() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public Product(String barcode, String name, Set<String> imageAlbum, String gender, String description, double price,
-			int idCategory, int tax, String status) {
+			String idCategory, int tax, String status) {
 		super();
 		this.barcode = barcode;
 		this.name = name;
@@ -59,8 +62,9 @@ public class Product {
 
 		this.status = status;
 	}
-	public Product(String name, Set<String> imageAlbum, String gender, String description, double price, int idCategory,
-			int tax, String status) {
+
+	public Product(String name, Set<String> imageAlbum, String gender, String description, double price,
+			String idCategory, int tax, String status) {
 		super();
 		this.name = name;
 		this.imageAlbum = imageAlbum;
@@ -69,54 +73,70 @@ public class Product {
 		this.price = price;
 		this.idCategory = idCategory;
 		this.tax = tax;
-	
+
 		this.status = status;
 	}
+
 	public String getBarcode() {
 		return barcode;
 	}
+
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Set<String> getImageAlbum() {
 		return imageAlbum;
 	}
+
 	public void setImageAlbum(Set<String> imageAlbum) {
 		this.imageAlbum = imageAlbum;
 	}
+
 	public String getGender() {
 		return gender;
 	}
+
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public double getPrice() {
 		return price;
 	}
+
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public int getIdCategory() {
+
+	public String getIdCategory() {
 		return idCategory;
 	}
-	public void setIdCategory(int idCategory) {
+
+	public void setIdCategory(String idCategory) {
 		this.idCategory = idCategory;
 	}
+
 	public int getTax() {
 		return tax;
 	}
+
 	public void setTax(int tax) {
 		this.tax = tax;
 	}
@@ -124,16 +144,16 @@ public class Product {
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	@Override
 	public String toString() {
 		return "Product [barcode=" + barcode + ", name=" + name + ", imageAlbum=" + imageAlbum + ", gender=" + gender
 				+ ", description=" + description + ", price=" + price + ", idCategory=" + idCategory + ", tax=" + tax
 				+ ", status=" + status + "]";
 	}
-	
-
 
 }

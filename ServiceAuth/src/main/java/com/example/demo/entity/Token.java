@@ -1,24 +1,24 @@
 package com.example.demo.entity;
 
 public class Token {
-	private String email;
+	private String id;
 	private String roles;
 	private String expired;
 	public Token() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Token(String email, String roles, String expired) {
+	public Token(String id, String roles, String expired) {
 		super();
-		this.email = email;
+		this.id = id;
 		this.roles = roles;
 		this.expired = expired;
 	}
-	public String getEmail() {
-		return email;
+	public String getid() {
+		return id;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setid(String id) {
+		this.id = id;
 	}
 	public String getRoles() {
 		return roles;
@@ -34,8 +34,9 @@ public class Token {
 	}
 	@Override
 	public String toString() {
-		return "JWT [email=" + email + ", roles=" + roles + ", expired=" + expired + "]";
+		return "Token [id=" + id + ", roles=" + roles + ", expired=" + expired + "]";
 	}
+
 	
 	
 }

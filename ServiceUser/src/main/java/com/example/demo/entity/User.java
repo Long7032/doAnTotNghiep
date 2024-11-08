@@ -1,6 +1,10 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,8 +38,13 @@ public class User {
 	private LocalDateTime timeCreate;
 	@Column(name = "user_shopping_point")
 	private double shoppingPoint;
+	@Column(name = "user_status", nullable = false)
+	private String status;
 	@Column(name = "user_role", nullable = false)
 	private String role;
+	@Column(name = "employee_address", columnDefinition = "jsonb")
+	@JdbcTypeCode(SqlTypes.JSON)
+	private HashMap<String, String> address;
 
 	@PrePersist
 	protected void onCreate() {
@@ -48,8 +57,11 @@ public class User {
 		if (timeCreate == null) {
 			timeCreate = LocalDateTime.now();
 		}
+		if (status == null) {
+			status = "active";
+		}
 		if (role == null) {
-			role = "2";		// 2 is customer and 1 is employee
+			role = "2"; // 2 is customer and 1 is employee
 		}
 	}
 
@@ -58,9 +70,11 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String avatar, String name, String phone, String email, String gender, LocalDateTime birthday,
-			LocalDateTime timeCreate, double shoppingPoint, String status) {
+	public User(String id, String avatar, String name, String phone, String email, String gender,
+			LocalDateTime birthday, LocalDateTime timeCreate, double shoppingPoint, String status, String role,
+			HashMap<String, String> address) {
 		super();
+		this.id = id;
 		this.avatar = avatar;
 		this.name = name;
 		this.phone = phone;
@@ -69,7 +83,9 @@ public class User {
 		this.birthday = birthday;
 		this.timeCreate = timeCreate;
 		this.shoppingPoint = shoppingPoint;
-		this.role = status;
+		this.status = status;
+		this.role = role;
+		this.address = address;
 	}
 
 	public final String getId() {
@@ -144,8 +160,6 @@ public class User {
 		this.shoppingPoint = shoppingPoint;
 	}
 
-	
-
 	public String getRole() {
 		return role;
 	}
@@ -154,13 +168,27 @@ public class User {
 		this.role = role;
 	}
 
+	public HashMap<String, String> getAddress() {
+		return address;
+	}
+
+	public void setAddress(HashMap<String, String> address) {
+		this.address = address;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", avatar=" + avatar + ", name=" + name + ", phone=" + phone + ", email=" + email
 				+ ", gender=" + gender + ", birthday=" + birthday + ", timeCreate=" + timeCreate + ", shoppingPoint="
-				+ shoppingPoint + ", role=" + role + "]";
+				+ shoppingPoint + ", status=" + status + ", role=" + role + ", address=" + address + "]";
 	}
-
-
 
 }
