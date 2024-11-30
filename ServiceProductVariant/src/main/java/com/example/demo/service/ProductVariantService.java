@@ -22,6 +22,7 @@ public class ProductVariantService {
 
 	public boolean checkQuantityOfProductVariant(ProductVariant productVariant) {
 		System.out.println("Product Variant Service - Check Quantity Of Product Variant");
+		System.out.println("Data Init: " + productVariant );
 		ProductVariant rs = productVariantRepository
 				.findById(new IDProductVariant(productVariant.getProductBarcode(), productVariant.getSize()))
 				.orElseThrow();

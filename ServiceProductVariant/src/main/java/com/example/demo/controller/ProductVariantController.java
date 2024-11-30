@@ -43,6 +43,7 @@ public class ProductVariantController {
 
 	@PutMapping("/decrease")
 	public ProductVariant decreaseProductVariant(@RequestBody ProductVariant productVariant) {
+		System.out.println("Product Variants - Update Quantity - Descrease");
 		return productVariantService.updateQuantiyProductVariant(productVariant, "decrease");
 	}
 

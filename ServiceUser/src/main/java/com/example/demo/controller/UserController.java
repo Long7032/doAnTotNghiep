@@ -29,7 +29,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getUser(@PathVariable String id) {
 		System.out.println("User Controller - Get User By ID");
-		
+
 		Optional<User> user = userService.getUser(id);
 		if (user != null) {
 			return ResponseEntity.status(200).body(user);
@@ -42,9 +42,8 @@ public class UserController {
 		System.out.println("User Controller - Save User");
 		// TODO: process POST request
 		System.out.println(user);
-//		return ResponseEntity.status(500).body(userService.saveUser(user));
 		if (userService.saveUser(user) == null) {
-			return ResponseEntity.status(500).body(new String("Fail"));
+			return ResponseEntity.status(400).body(new String("Fail"));
 		}
 		return ResponseEntity.status(200).body(userService.saveUser(user));
 	}
@@ -60,8 +59,9 @@ public class UserController {
 		}
 		return ResponseEntity.status(200).body(rs);
 	}
+
 	@PatchMapping("/{type}")
-	public ResponseEntity<Object> updateRoleUser(@PathVariable String type, @RequestBody User user) {
+	public ResponseEntity<Object> updateRoleUser(@PathVariable String type, @RequestBody  User user) {
 		System.out.println("User Controller - Update Role User");
 		System.out.println(user);
 //		return ResponseEntity.status(500).body(userService.saveUser(user));
@@ -71,6 +71,7 @@ public class UserController {
 		}
 		return ResponseEntity.status(200).body(rs);
 	}
+
 	@DeleteMapping("/")
 	public ResponseEntity<Object> deleteUser(@RequestBody User user) {
 		// TODO: process POST request
@@ -88,6 +89,7 @@ public class UserController {
 		System.out.println("User Controller - Get User By Page");
 		return userService.getUserInRange(page, size);
 	}
+
 	@GetMapping("/{page}/{size}")
 	public List<User> getListUsersByEmployeeRole(@PathVariable int page, @PathVariable int size) {
 		System.out.println("User Controller - Get User By Employee Role And Page");

@@ -9,8 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @IdClass(IDOrderDetail.class)
-@Table(name = "order_details", indexes = { 
-		@Index(name = "idx_id_order", columnList = "order_detail_id_order"),
+@Table(name = "order_details", indexes = { @Index(name = "idx_id_order", columnList = "order_detail_id_order"),
 		@Index(name = "idx_id_product", columnList = "order_detail_id_product") })
 
 public class OrderDetail {
@@ -84,10 +83,18 @@ public class OrderDetail {
 		this.pricePromotion = pricePromotion;
 	}
 
+	public String getSizeProduct() {
+		return sizeProduct;
+	}
+
+	public void setSizeProduct(String sizeProduct) {
+		this.sizeProduct = sizeProduct;
+	}
+
 	@Override
 	public String toString() {
-		return "OrderDetail [idOrder=" + idOrder + ", idProduct=" + idProduct + ", quantity=" + quantity + ", price="
-				+ price + ", pricePromotion=" + pricePromotion + "]";
+		return "OrderDetail [idOrder=" + idOrder + ", idProduct=" + idProduct + ", sizeProduct=" + sizeProduct
+				+ ", quantity=" + quantity + ", price=" + price + ", pricePromotion=" + pricePromotion + "]";
 	}
 
 }

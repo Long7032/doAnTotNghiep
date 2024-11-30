@@ -82,7 +82,7 @@ public class OrderService {
 	public Order updateNewStatusOrder(Order order) {
 		System.out.println("Order Service - Update New Status Order");
 		System.out.println("Data Init: " + order);
-		Order rs = orderRepository.getById(new IDOrder(order.getIdOrder(), order.getIdUser()));
+		Order rs = orderRepository.findById(new IDOrder(order.getIdOrder(), order.getIdUser())).orElseThrow();
 		rs.setCurrentStatus(order.getCurrentStatus());
 
 		System.out.println("Data Result: " + rs);
@@ -94,6 +94,18 @@ public class OrderService {
 	}
 
 	public Order getOrderByID(Order order) {
-		return orderRepository.getOrdersByIDOrder(order.getIdOrder());
+		System.out.println("Order Service - Get Order By ID");
+		Order rs = null;
+		try {
+			rs = orderRepository.getOrdersByIDOrder(order.getIdOrder());
+		} catch (Exception e) {
+			// TODO: handle exception
+			// Ghi log lỗi thay vì in ra console
+//			LoggerFactory.getLogger(OrderService.class).error("Error fetching order by ID: ", e);
+			// Ném lại ngoại lệ hoặc xử lý theo cách khác
+			throw new RuntimeException("Unable to fetch order", e);
+
+		}
+		return rs;
 	}
 }

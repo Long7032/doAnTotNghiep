@@ -27,12 +27,12 @@ public class Product {
 	@Column(name = "product_description", columnDefinition = "text")
 	private String description;
 	@Column(name = "product_price", nullable = false)
-	private double price;
+	private double price; // giá = giá gốc * ( 1 + thuế)
 	@Column(name = "product_category_id", nullable = false)
 	private String idCategory;
 	@Column(name = "product_tax", nullable = false)
-	private int tax;
-	@Column(name = "product_status", nullable = false)
+	private double tax;
+	@Column(name = "product_status")
 	private String status;
 
 	@PrePersist
@@ -133,11 +133,11 @@ public class Product {
 		this.idCategory = idCategory;
 	}
 
-	public int getTax() {
+	public double getTax() {
 		return tax;
 	}
 
-	public void setTax(int tax) {
+	public void setTax(double tax) {
 		this.tax = tax;
 	}
 

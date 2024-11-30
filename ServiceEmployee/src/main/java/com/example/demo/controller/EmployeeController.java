@@ -48,8 +48,10 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/")
-	public Employee saveEmployees(@RequestBody Employee employee) {
-		return employeeService.saveEmployee(employee);
+	public ResponseEntity<Object> saveEmployees(@RequestBody Employee employee) {
+		System.out.println("Employee Controller - Save Employee");
+		Employee rs = employeeService.saveEmployee(employee);
+		return ResponseEntity.status(200).body(rs);
 	}
 
 	@PutMapping("/")

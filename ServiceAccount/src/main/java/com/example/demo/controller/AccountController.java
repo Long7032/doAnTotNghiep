@@ -30,6 +30,17 @@ public class AccountController {
 		Account rs = accountService.saveAccount(account);
 		return ResponseEntity.status(200).body(rs);
 	}
+	
+	@PostMapping("/check")
+	public ResponseEntity<Object> checkAccount(@RequestBody Account account) {
+		// TODO: process POST request
+		System.out.println("Account Controller - Check Account: " + account);
+		Account rs = accountService.checkAccount(account);
+		if (rs == null) {
+			return ResponseEntity.status(200).body(rs);
+		}
+		return ResponseEntity.status(400).body(rs);
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<Object> getAccount(@RequestBody Account account) {

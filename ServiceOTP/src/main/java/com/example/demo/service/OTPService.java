@@ -27,7 +27,7 @@ public class OTPService {
 
 		int otpValue = 100000 + random.nextInt(900000);
 		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime expiry = now.plusMinutes(1);
+		LocalDateTime expiry = now.plusMinutes(10);
 
 		OTP otp = new OTP(email, String.valueOf(otpValue), now, expiry);
 		try {
@@ -36,7 +36,7 @@ public class OTPService {
 			sendOTPByEmail(email, otp.getMessage());
 		} catch (Exception e) {
 			// TODO: handle exception
-			return "OTP has been sent. Please try again after 5 minutes.";
+			return "OTP has been sent. Please try again after 10 minutes.";
 		}
 	return "Send OTP Success";
 	}
@@ -60,7 +60,7 @@ public class OTPService {
 
 		message.setTo(toEmail);
 		message.setSubject("Xác thực OTP");
-		message.setText(new Date().toString() + "Mã OTP của bạn là " + otp + ". Mã OTP sẽ hết hạn sau 5 phút nữa");
+		message.setText(new Date().toString() + "Mã OTP của bạn là " + otp + ". Mã OTP sẽ hết hạn sau 10 phút nữa");
 		message.setFrom("gaming@gmail.com");
 
 		mailSender.send(message);

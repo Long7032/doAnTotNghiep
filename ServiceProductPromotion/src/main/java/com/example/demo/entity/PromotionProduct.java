@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 @Table(name="promotion_products", indexes = {
 		@Index(name="idx_time_create",columnList = "promotion_products_time_create"),
 		@Index(name="idx_time_end",columnList = "promotion_products_time_end"),
-		@Index(name="idx_name",columnList = "promotion_products_name"),
+		@Index(name="idx_promotion_name",columnList = "promotion_products_name"),
 })
 @IdClass(IDPromotionProduct.class)
 public class PromotionProduct {

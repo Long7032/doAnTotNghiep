@@ -18,6 +18,9 @@ public class CategoryService {
 	public Category getCategory(String name) {
 		return categoryRepository.getCaterory(name);
 	}
+	public Category getCategoryByID(String id) {
+		return categoryRepository.findById(id).orElseThrow();
+	}
 
 	public List<Category> getCategories() {
 		return categoryRepository.findAll();
@@ -25,6 +28,11 @@ public class CategoryService {
 	public List<Category> getCategoriesInRange(int page, int size) {
 		Pageable pageable = PageRequest.of(page - 1, size);
 		return categoryRepository.getCategoryInRange(pageable);
+	}
+	
+	public List<Category> getCategoriesInRangeActive(int page, int size) {
+		Pageable pageable = PageRequest.of(page - 1, size);
+		return categoryRepository.getCategoryInRangeActive(pageable);
 	}
 	public Category saveCategory(Category category) {
 		Category rs = null;

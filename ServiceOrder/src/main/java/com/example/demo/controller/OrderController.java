@@ -35,6 +35,12 @@ public class OrderController {
 		return orderService.getOrder(order);
 	}
 
+	@PostMapping("/order-id")
+	public ResponseEntity<Object> getOrdersByIdOrder(@RequestBody Order order) {
+		System.out.println("Order Controller - Get Order By Order ID");
+		return ResponseEntity.status(200).body(orderService.getOrderByID(order));
+	}
+
 	@GetMapping("/{idUser}")
 	public ResponseEntity<Object> getOrdersByUser(@PathVariable String idUser) {
 		return ResponseEntity.status(200).body(orderService.getOrdersByUser(idUser));
@@ -46,7 +52,8 @@ public class OrderController {
 	}
 
 	@GetMapping("/{status}/{page}/{size}")
-	public ResponseEntity<Object> getOrderByCurrentStatusInRange(@PathVariable String status, @PathVariable int page, @PathVariable int size) {
+	public ResponseEntity<Object> getOrderByCurrentStatusInRange(@PathVariable String status, @PathVariable int page,
+			@PathVariable int size) {
 		System.out.println("Order Controller - Get Order By Current Status In Range");
 		List<Order> rs = orderService.getOrderByCurrentStatusInRange(status, page, size);
 		return ResponseEntity.status(200).body(rs);

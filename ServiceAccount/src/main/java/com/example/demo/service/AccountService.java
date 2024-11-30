@@ -20,7 +20,13 @@ public class AccountService {
 		System.out.println("Account Service - Save Account");
 		String encodedPassword = passwordEncoder.encode(account.getPassword());
 		account.setPassword(encodedPassword);
-		return accountRepository.save(account);
+		try {
+			return accountRepository.save(account);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 
 	public List<Account> getAccounts() {
@@ -38,6 +44,12 @@ public class AccountService {
 		return null;
 	}
 
+	public Account checkAccount(Account account) {
+		System.out.println("Account Service - Check Account");
+//		Account rs = null;
+		return accountRepository.getAccount(account.getUserName());
+	}
+	
 	public Account updateAccountByType(String option, Account account) {
 		System.out.println("Account Service - Update Account By Type");
 		Account rs = accountRepository.findById(account.getIdUser()).orElseThrow();

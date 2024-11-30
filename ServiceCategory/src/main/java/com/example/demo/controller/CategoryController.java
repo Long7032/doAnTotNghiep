@@ -25,31 +25,47 @@ public class CategoryController {
 
 	@GetMapping("/")
 	public ResponseEntity<Object> getCaregories() {
+		System.out.println("Category Controller - Get All Categories");
 		List<Category> rs = categoryService.getCategories();
-		if (rs.toArray().length > 0) {
-			return ResponseEntity.status(200).body(rs.toArray().length);
-		}
-		return ResponseEntity.status(409).body(new String("Null"));
+		return ResponseEntity.status(200).body(rs);
 	}
-	
-	@GetMapping("/all")
-	public ResponseEntity<Object> getAllCaregory() {
-		List<Category> rs = categoryService.getCategories();
-		if (rs.toArray().length > 0) {
-			return ResponseEntity.status(200).body(rs.toArray());
-		}
-		return ResponseEntity.status(409).body(new String("Null"));
+
+	@PostMapping("/data-sample")
+	public ResponseEntity<Object> saveDataSample(@RequestBody List<Category> category) {
+		System.out.println("Category Controller - Get Category By ID");
+		category.forEach(e -> {
+			categoryService.saveCategory(e);
+		});
+		return ResponseEntity.status(200).body(new String("OK"));
 	}
+
+	@PostMapping("/id")
+	public ResponseEntity<Object> getCaregoryByID(@RequestBody Category category) {
+		System.out.println("Category Controller - Get Category By ID");
+		return ResponseEntity.status(200).body(categoryService.getCategoryByID(category.getId()));
+	}
+
 	@GetMapping("/{page}/{size}")
 	public ResponseEntity<Object> getCaregoriesByPage(@PathVariable int page, @PathVariable int size) {
-		System.out.println("Category Controller - Get Category By Page");
+		System.out.println("Category Controller - Get Categories By Page");
 		List<Category> rs = categoryService.getCategoriesInRange(page, size);
-		if(rs.toArray().length == 0) {
+		if (rs.toArray().length == 0) {
 			return ResponseEntity.status(409).body(categoryService.getCategoriesInRange(page, size));
 		}
 		return ResponseEntity.status(200).body(categoryService.getCategoriesInRange(page, size));
 	}
-	@GetMapping("/name/")
+
+	@GetMapping("/active/{page}/{size}")
+	public ResponseEntity<Object> getCaregoriesByPageActive(@PathVariable int page, @PathVariable int size) {
+		System.out.println("Category Controller - Get Category Active By Page");
+		List<Category> rs = categoryService.getCategoriesInRangeActive(page, size);
+		if (rs.toArray().length == 0) {
+			return ResponseEntity.status(409).body(categoryService.getCategoriesInRangeActive(page, size));
+		}
+		return ResponseEntity.status(200).body(categoryService.getCategoriesInRangeActive(page, size));
+	}
+
+	@GetMapping("/name")
 	public ResponseEntity<Object> getCategory(@RequestBody Category category) {
 		Category rs = categoryService.getCategory(category.getName());
 		if (rs != null) {
@@ -69,7 +85,7 @@ public class CategoryController {
 		return ResponseEntity.status(409).body(new String("Fail"));
 	}
 
-	@PutMapping("/{name}")
+	@PutMapping("/")
 	public ResponseEntity<Object> updateCategory(@RequestBody Category category) {
 		Category rs = categoryService.updateCategory(category);
 		if (rs != null) {
@@ -83,7 +99,8 @@ public class CategoryController {
 		System.out.println("Service Product - Controller - Data: " + category.getName());
 		if (categoryService.deleteCategory(category) != null) {
 			return ResponseEntity.status(200).body(new String("Success"));
-		};
+		}
+		;
 		return ResponseEntity.status(409).body(new String("Fail"));
 	}
 }

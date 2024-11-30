@@ -33,5 +33,24 @@ public class OrderStatusController {
 	public List<OrderStatus> getOrderStatuss() {
 		return orderStatusService.getOrderStatuss();
 	}
+	
+	@PostMapping("/id")
+	public ResponseEntity<Object> getAllOrderStatusById(@RequestBody OrderStatus orderStatus) {
+		//TODO: process POST request
+		System.out.println("Order Status Controller - Get All Order Status By ID");
+		List<OrderStatus> list = orderStatusService.getOrderStatussByID(orderStatus);
+		
+		return ResponseEntity.status(200).body(list);
+	}
+	
+	@PostMapping("/id/status")
+	public ResponseEntity<Object> getOrderStatusByIdAndStatus(@RequestBody OrderStatus orderStatus) {
+		//TODO: process POST request
+		System.out.println("Order Status Controller - Get Order Status By ID And Status");
+		List<OrderStatus> list = orderStatusService.getOrderStatusByIDAndStatus(orderStatus);
+		
+		return ResponseEntity.status(200).body(list.get(0));
+	}
+	
 
 }

@@ -89,8 +89,8 @@ public class ProductController {
 	@PostMapping("/category/{page}/{size}")
 	public ResponseEntity<Object> getProductsByIdCategoryInRange(@RequestBody Product product, @PathVariable int page,
 			@PathVariable int size) {
-		return ResponseEntity.status(200).body(productService.getProductsByCategoryInRange(product.getIdCategory(),
-				page, size));
+		return ResponseEntity.status(200)
+				.body(productService.getProductsByCategoryInRange(product.getIdCategory(), page, size));
 	}
 
 	// ========== Get Products By Name ==========
@@ -114,4 +114,14 @@ public class ProductController {
 		return ResponseEntity.status(200).body(p);
 	}
 
+	// ========== Testing Product ==========
+	@PostMapping("/testing-data")
+	public ResponseEntity<Object> saveTestingProducts(@RequestBody List<Product> products) {
+		System.out.println("Product Controller - Testing Product");
+		products.forEach(e -> {
+			productService.saveProduct(e);
+		});
+
+		return ResponseEntity.status(200).body(productService.getProducts());
+	}
 }

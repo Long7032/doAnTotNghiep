@@ -1,3 +1,4 @@
+
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
@@ -52,7 +53,14 @@ public class OrderStatusService {
 				break;
 			}
 			case "delivery": {
-				if (orderStatus.getStatus().equals("done") || orderStatus.getStatus().equals("cancel")) {
+				if (orderStatus.getStatus().equals("delivered") || orderStatus.getStatus().equals("cancel")) {
+					orderStatus.setTime(LocalDateTime.now());
+					rs = orderStatusRepository.save(orderStatus);
+				}
+				break;
+			}
+			case "delivered": {
+				if (orderStatus.getStatus().equals("done")) {
 					orderStatus.setTime(LocalDateTime.now());
 					rs = orderStatusRepository.save(orderStatus);
 				}
@@ -72,6 +80,16 @@ public class OrderStatusService {
 
 	}
 
+	public List<OrderStatus> getOrderStatussByID(OrderStatus orderStatus) {
+		System.out.println("Order Status Service - Get Order Status By ID");
+		System.out.println("Data Init: " + orderStatus);
+		return orderStatusRepository.getAllStatusOrderByID(orderStatus.getIdOrder());
+	}
+	public List<OrderStatus> getOrderStatusByIDAndStatus(OrderStatus orderStatus) {
+		System.out.println("Order Status Service - Get Order Status By ID");
+		System.out.println("Data Init: " + orderStatus);
+		return orderStatusRepository.getStatusOrderByIDAndStatus(orderStatus.getIdOrder(), orderStatus.getStatus());
+	}
 	public List<OrderStatus> getOrderStatuss() {
 		// TODO Auto-generated method stub
 		return orderStatusRepository.findAll();

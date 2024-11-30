@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "employees")
 public class Employee {
+
 	@Id
 	@Column(name = "employee_id")
 	private String id; // NVyyyyMMddHHmmss
@@ -21,10 +22,11 @@ public class Employee {
 
 	@PrePersist
 	public void onCreate() {
-		if(hiredDate == null) {
+		if (hiredDate == null) {
 			hiredDate = LocalDateTime.now();
 		}
 	}
+
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub

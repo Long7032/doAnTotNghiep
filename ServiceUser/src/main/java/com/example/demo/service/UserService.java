@@ -20,7 +20,14 @@ public class UserService {
 	public User saveUser(User user) {
 		System.out.println("User Service - Save User");
 		User rs = null;
-		rs = userRepository.save(user);
+		try {
+			user.setRole("2");
+			rs = userRepository.save(user);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
+		
 		return rs;
 	}
 
@@ -35,7 +42,7 @@ public class UserService {
 	public User updateUser(User user) {
 		System.out.println("User Service - Update User");
 		// Get User By ID
-		User rs = userRepository.getById(user.getId());
+		User rs = userRepository.findById(user.getId()).orElseThrow();
 
 		// Don't change this user data
 		user.setTimeCreate(rs.getTimeCreate());
