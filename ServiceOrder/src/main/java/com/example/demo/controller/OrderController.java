@@ -48,7 +48,7 @@ public class OrderController {
 
 	@GetMapping("/{page}/{size}")
 	public ResponseEntity<Object> getOrderInRange(@PathVariable int page, @PathVariable int size) {
-		return ResponseEntity.status(200).body(orderService.getProductInRange(page, size));
+		return ResponseEntity.status(200).body(orderService.getOrderInRange(page, size));
 	}
 
 	@GetMapping("/{status}/{page}/{size}")
@@ -66,11 +66,18 @@ public class OrderController {
 		return ResponseEntity.status(200).body(orderService.updateNewStatusOrder(order));
 	}
 	
-	@GetMapping("/count")
+	@GetMapping("/status-count-order")
 	public ResponseEntity<Object> countOrdersByStatus() {
 		System.out.println("Order Controller - Count Order By Status");
 		return ResponseEntity.status(200).body(orderService.countOrdersByStatus());
 	}
+	
+	@PostMapping("/time-count-order")
+	public ResponseEntity<Object> countOrdersByTime(@RequestBody Order order) {
+		System.out.println("Order Controller - Count Order By Time");
+		return ResponseEntity.status(200).body(orderService.countOrdersByTime(order.getDateTime()));
+	}
+	
 	
 
 }

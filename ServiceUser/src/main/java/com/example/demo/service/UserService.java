@@ -139,4 +139,9 @@ public class UserService {
 		return userRepository.findById(id);
 	}
 
+	public List<Object[]> countUserByTime(User u) {
+		System.out.println("User Service - Count User By Time");
+		return userRepository.countUserByTime(u.getTimeCreate());
+	}
+
 }

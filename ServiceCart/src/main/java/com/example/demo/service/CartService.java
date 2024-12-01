@@ -17,8 +17,16 @@ public class CartService {
 	private CartRepository cartRepository;
 
 	public Cart saveCart(Cart cart) {
+		System.out.println("Cart Service - Save Cart");
 		System.out.println("Data Init: " + cart);
-		return cartRepository.save(cart);
+		Cart rs = null;
+		try {
+			rs = cartRepository.save(cart);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error: " + e.getMessage());
+		}
+		return rs;
 	}
 
 	public Cart updateCart(Cart cart) {

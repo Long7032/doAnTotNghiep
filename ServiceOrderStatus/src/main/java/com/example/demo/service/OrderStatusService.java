@@ -66,15 +66,19 @@ public class OrderStatusService {
 				}
 				break;
 			}
+			case "done": {
+
+				break;
+			}
 			case "cancel": {
 				rs = null;
 				break;
 			}
-
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + os.getStatus());
 			}
-			;
 		}
-//		// Check Condition Before Saving New Status Order
+		;
 
 		return rs;
 
@@ -85,13 +89,23 @@ public class OrderStatusService {
 		System.out.println("Data Init: " + orderStatus);
 		return orderStatusRepository.getAllStatusOrderByID(orderStatus.getIdOrder());
 	}
+
 	public List<OrderStatus> getOrderStatusByIDAndStatus(OrderStatus orderStatus) {
 		System.out.println("Order Status Service - Get Order Status By ID");
 		System.out.println("Data Init: " + orderStatus);
 		return orderStatusRepository.getStatusOrderByIDAndStatus(orderStatus.getIdOrder(), orderStatus.getStatus());
 	}
+
 	public List<OrderStatus> getOrderStatuss() {
 		// TODO Auto-generated method stub
+		System.out.println("Order Status Service - Get All Order Status");
 		return orderStatusRepository.findAll();
+	}
+	
+	public List<OrderStatus> getOrderWithDeliveredStatus(OrderStatus orderStatus){
+		System.out.println("Order Status Service - Get Order Status With Delivered Status");
+		System.out.println("Data Init: " + orderStatus);
+		return orderStatusRepository.getOrderWithDeliveredStatus(orderStatus.getTime());
+		
 	}
 }

@@ -93,6 +93,12 @@ public class UserController {
 		return ResponseEntity.status(200).body(userService.getUserInRange(type, page, size));
 	}
 
+	@PostMapping("/time-count-user")
+	public ResponseEntity<Object> countUserByTime(@RequestBody User u) {
+		System.out.println("User Controller - Count Users By Time");
+		return ResponseEntity.status(200).body(userService.countUserByTime(u));
+	}
+
 	@DeleteMapping("/reset-service")
 	public ResponseEntity<Object> resetService() {
 		System.out.println("User Controller - Reset Service");

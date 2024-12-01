@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class OrderService {
 		return orderRepository.getOrdersByUser(id);
 	}
 
-	public List<Order> getProductInRange(int page, int size) {
+	public List<Order> getOrderInRange(int page, int size) {
 		Pageable pageable = PageRequest.of(page - 1, size);
 		return orderRepository.getOrderInRange(pageable);
 	}
@@ -100,17 +101,20 @@ public class OrderService {
 			rs = orderRepository.getOrdersByIDOrder(order.getIdOrder());
 		} catch (Exception e) {
 			// TODO: handle exception
-			// Ghi log lỗi thay vì in ra console
-//			LoggerFactory.getLogger(OrderService.class).error("Error fetching order by ID: ", e);
-			// Ném lại ngoại lệ hoặc xử lý theo cách khác
 			throw new RuntimeException("Unable to fetch order", e);
 		}
 		return rs;
 	}
-	
-	public List<Object[]> countOrdersByStatus(){
+
+	public List<Object[]> countOrdersByStatus() {
 		System.out.println("Order Service - Count Order By Status");
 		return orderRepository.countOrdersByStatus();
 	}
+
+	public List<Object[]> countOrdersByTime(LocalDateTime time) {
+		System.out.println("Order Service - Count Order By Time");
+		return orderRepository.countOrderByDateTime(time);
+	}
+
 
 }
