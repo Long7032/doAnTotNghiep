@@ -18,6 +18,7 @@ public class JwtUtil {
 	private String secretKey = "doantotnghiepcualongvanghia";
 
 	public String generateToken(Token token) {
+		System.out.println("JWT Util - Generate Token");
 		token.setExpired(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10).toString());
 
 		return Jwts.builder()

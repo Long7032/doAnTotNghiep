@@ -24,4 +24,7 @@ public interface OrderRepository extends JpaRepository<Order, IDOrder>{
 	
 	@Query("Select o from Order o where o.currentStatus = ?1")
 	public List<Order> getOrderByCurrentStatus(String status, Pageable pageable);
+	
+	@Query("SELECT o.currentStatus, COUNT(o.idOrder) FROM Order o GROUP BY o.currentStatus ORDER BY	o.currentStatus desc")
+	public List<Object[]> countOrdersByStatus(); 
 }

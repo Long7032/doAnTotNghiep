@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,17 +16,33 @@ public class CatalogService {
 	private CatalogRepository catalogRepository;
 
 	public Catalog saveCatalog(Catalog catalog) {
-		return catalogRepository.save(catalog);
+		System.out.println("Catalog Server - Save Catalog");
+		Catalog c = null;
+		try {
+			c = catalogRepository.save(catalog);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error: " + e.getMessage());
+		}
+		return c;
 	}
 
 	public Catalog updateCatalog(Catalog catalog) {
-		return catalogRepository.saveAndFlush(catalog);
+		System.out.println("Catalog Server - Save Catalog");
+		Catalog c = null;
+		try {
+			c = catalogRepository.saveAndFlush(catalog);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error: " + e.getMessage());
+		}
+		return c;
 	}
-	
+
 	public void deleteCatalog(Catalog catalog) {
 		catalogRepository.delete(catalog);
 	}
-	
+
 	public List<Catalog> getAllCatalog() {
 		return catalogRepository.findAll();
 	}
@@ -36,13 +51,28 @@ public class CatalogService {
 		return catalogRepository.getCatalogByName(name);
 	}
 
-	public Optional<Catalog> getCatalogByID(String id) {
-		return catalogRepository.findById(id);
+	public Catalog getCatalogByID(String id) {
+		return catalogRepository.findById(id).orElseThrow();
 	}
 
-	public List<Catalog> getCatalogInRange(int page, int size) {
+	public List<Catalog> getCatalogInRange(String type, int page, int size) {
+		System.out.println("Catalog Service - Get Catalog By Status In Range");
+		
 		Pageable pageable = PageRequest.of(page - 1, size);
-		return catalogRepository.getCatalogInRange(pageable);
+		switch (type) {
+		case "all": {
+			return catalogRepository.getCatalogInRange(pageable);
+		}
+		case "active": {
+			return catalogRepository.getCatalogByStatusInRange(pageable, type);
+		}
+		case "inactive": {
+			return catalogRepository.getCatalogByStatusInRange(pageable, type);
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + type);
+		}
+		
 	}
 
 }

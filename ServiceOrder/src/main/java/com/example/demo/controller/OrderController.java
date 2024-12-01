@@ -65,5 +65,12 @@ public class OrderController {
 		System.out.println("Order Controller - Update New Status Order");
 		return ResponseEntity.status(200).body(orderService.updateNewStatusOrder(order));
 	}
+	
+	@GetMapping("/count")
+	public ResponseEntity<Object> countOrdersByStatus() {
+		System.out.println("Order Controller - Count Order By Status");
+		return ResponseEntity.status(200).body(orderService.countOrdersByStatus());
+	}
+	
 
 }

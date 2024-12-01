@@ -104,8 +104,13 @@ public class OrderService {
 //			LoggerFactory.getLogger(OrderService.class).error("Error fetching order by ID: ", e);
 			// Ném lại ngoại lệ hoặc xử lý theo cách khác
 			throw new RuntimeException("Unable to fetch order", e);
-
 		}
 		return rs;
 	}
+	
+	public List<Object[]> countOrdersByStatus(){
+		System.out.println("Order Service - Count Order By Status");
+		return orderRepository.countOrdersByStatus();
+	}
+
 }

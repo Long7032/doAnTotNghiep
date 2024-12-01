@@ -38,6 +38,10 @@ public class CartService {
 	public Optional<Cart> getCartByID(Cart cart) {
 		Optional<Cart> rs = cartRepository.findById(new CartID(cart.getId(), cart.getIdUser()));
 		return rs;
-
+	}
+	
+	public Cart getCartByUserID(Cart cart) {
+		System.out.println("Cart Service - Get Cart By User ID");
+		return cartRepository.findCartByUserID(cart.getIdUser());
 	}
 }

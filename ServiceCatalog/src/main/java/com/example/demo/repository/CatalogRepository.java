@@ -9,9 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import com.example.demo.entity.Catalog;
 
 public interface CatalogRepository extends JpaRepository<Catalog, String> {
-	@Query("select c from Catalog c where c.name = ?1")
+	@Query("SELECT c FROM Catalog c where c.name = ?1")
 	public Catalog getCatalogByName(String name);
 
-	@Query("select c from Catalog c")
+	@Query("SELECT c FROM Catalog c")
 	public List<Catalog> getCatalogInRange(Pageable page);
+
+	@Query("SELECT c FROM Catalog c WHERE c.status = ?1")
+	public List<Catalog> getCatalogByStatusInRange(Pageable page, String status);
 }

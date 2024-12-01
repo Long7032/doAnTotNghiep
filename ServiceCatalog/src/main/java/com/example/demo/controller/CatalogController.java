@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import com.example.demo.entity.Catalog;
 import com.example.demo.service.CatalogService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 
 @RestController
 @RequestMapping("/api/catalogs")
@@ -38,11 +36,20 @@ public class CatalogController {
 		return ResponseEntity.status(200).body(catalogService.getAllCatalog().toArray().length);
 	}
 
+	@PostMapping("/data-sample")
+	public ResponseEntity<Object> saveDataSample(@RequestBody List<Catalog> catalog) {
+		System.out.println("Catalog Controller - Save Sample Catalog");
+		catalog.forEach(e -> {
+			catalogService.saveCatalog(e);
+		});
+		return ResponseEntity.status(200).body(new String("OK"));
+	}
+
 	@PostMapping("/id")
 	public ResponseEntity<Object> getCatalogById(@RequestBody Catalog catalog) {
 		// TODO: process POST request
 		System.out.println("Catalog Controller - Get Catalog By ID");
-		Optional<Catalog> rs = catalogService.getCatalogByID(catalog.getId());
+		Catalog rs = catalogService.getCatalogByID(catalog.getId());
 		return ResponseEntity.status(200).body(rs);
 	}
 
@@ -53,20 +60,21 @@ public class CatalogController {
 		Catalog rs = catalogService.getCatalogByName(catalog.getName());
 		return ResponseEntity.status(200).body(rs);
 	}
-	
-	@GetMapping("/{page}/{size}")
-	public ResponseEntity<Object> getCatalogInRange(@PathVariable int page, @PathVariable int size) {
+
+	@GetMapping("/{type}/{page}/{size}")
+	public ResponseEntity<Object> getCatalogInRange(@PathVariable String type, @PathVariable int page,
+			@PathVariable int size) {
 		System.out.println("Catalog Controller - Get Catalog In Range");
-		List<Catalog> rs = catalogService.getCatalogInRange(page, size);
+		List<Catalog> rs = catalogService.getCatalogInRange(type, page, size);
 		return ResponseEntity.status(200).body(rs);
 	}
-	
+
 	@PutMapping("/")
-	public  ResponseEntity<Object>  updateCatalog(@RequestBody Catalog catalog) {
-		//TODO: process PUT request
+	public ResponseEntity<Object> updateCatalog(@RequestBody Catalog catalog) {
+		// TODO: process PUT request
 		System.out.println("Catalog Controller - Update Catalog");
 		Catalog rs = catalogService.updateCatalog(catalog);
 		return ResponseEntity.status(200).body(rs);
 	}
-	
+
 }

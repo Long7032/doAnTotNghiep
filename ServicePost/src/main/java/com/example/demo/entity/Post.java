@@ -27,19 +27,28 @@ public class Post {
 	private String idCatalog;
 	@Column(name = "post_id_user")
 	private String idUser;
+	@Column(name = "post_status")
+	private String status;
+
 	@PrePersist
 	protected void onCreate() {
-		
-		if(timeCreate == null) {
+
+		if (timeCreate == null) {
 			timeCreate = LocalDateTime.now();// Or Inactive
 		}
+		
+		if(status == null) {
+			status = "active";
+		}
 	}
+
 	public Post() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Post(String id, String title, String content, LocalDateTime timeCreate, String idCatalog, String idUser) {
+	public Post(String id, String title, String content, LocalDateTime timeCreate, String idCatalog, String idUser,
+			String status) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -47,6 +56,7 @@ public class Post {
 		this.timeCreate = timeCreate;
 		this.idCatalog = idCatalog;
 		this.idUser = idUser;
+		this.status = status;
 	}
 
 	public String getId() {
@@ -97,10 +107,20 @@ public class Post {
 		this.idUser = idUser;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", content=" + content + ", timeCreate=" + timeCreate
-				+ ", idCatalog=" + idCatalog + ", idUser=" + idUser + "]";
+				+ ", idCatalog=" + idCatalog + ", idUser=" + idUser + ", status=" + status + "]";
 	}
+
+	
 
 }

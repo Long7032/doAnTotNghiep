@@ -1,8 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +27,7 @@ public class UserController {
 	public ResponseEntity<Object> getUser(@PathVariable String id) {
 		System.out.println("User Controller - Get User By ID");
 
-		Optional<User> user = userService.getUser(id);
+		User user = userService.getUser(id).orElseThrow();
 		if (user != null) {
 			return ResponseEntity.status(200).body(user);
 		}
@@ -41,7 +38,6 @@ public class UserController {
 	public ResponseEntity<Object> saveUser(@RequestBody User user) {
 		System.out.println("User Controller - Save User");
 		// TODO: process POST request
-		System.out.println(user);
 		if (userService.saveUser(user) == null) {
 			return ResponseEntity.status(400).body(new String("Fail"));
 		}
@@ -52,19 +48,17 @@ public class UserController {
 	public ResponseEntity<Object> updateUser(@RequestBody User user) {
 		System.out.println("User Controller - Update User");
 		System.out.println(user);
-//		return ResponseEntity.status(500).body(.saveUser(user));userService
 		User rs = userService.updateUser(user);
 		if (userService.updateUser(user) == null) {
-			return ResponseEntity.status(500).body(new String("Fail"));
+			return ResponseEntity.status(400).body(new String("Fail"));
 		}
 		return ResponseEntity.status(200).body(rs);
 	}
 
 	@PatchMapping("/{type}")
-	public ResponseEntity<Object> updateRoleUser(@PathVariable String type, @RequestBody  User user) {
+	public ResponseEntity<Object> updateRoleUser(@PathVariable String type, @RequestBody User user) {
 		System.out.println("User Controller - Update Role User");
 		System.out.println(user);
-//		return ResponseEntity.status(500).body(userService.saveUser(user));
 		User rs = userService.updateRoleForUser(user, type);
 		if (rs == null) {
 			return ResponseEntity.status(500).body(new String("Fail"));
@@ -79,20 +73,30 @@ public class UserController {
 		return ResponseEntity.status(200).body(userService.deleteUser(user));
 	}
 
-	@GetMapping("/number")
-	public double getUsers() {
-		return userService.getUsers().toArray().length;
+	@GetMapping("/number/{type}")
+	public ResponseEntity<Object> getUsersByType(@PathVariable String type) {
+		System.out.println("User Controller - Get Users By Type");
+		return ResponseEntity.status(200).body(userService.getUsersByType(type));
 	}
 
-	@GetMapping("/list/employee/{page}/{size}")
-	public List<User> getListUsers(@PathVariable int page, @PathVariable int size) {
-		System.out.println("User Controller - Get User By Page");
-		return userService.getUserInRange(page, size);
+	@GetMapping("/list/employee/{type}/{page}/{size}")
+	public ResponseEntity<Object> getUsersByRoleAndStatusInRange(@PathVariable String type, @PathVariable int page,
+			@PathVariable int size) {
+		System.out.println("User Controller - Get Users By Role Employee And Type In Range");
+		return ResponseEntity.status(200).body(userService.getUserByEmployeeRoleInRange(type, page, size));
 	}
 
-	@GetMapping("/{page}/{size}")
-	public List<User> getListUsersByEmployeeRole(@PathVariable int page, @PathVariable int size) {
-		System.out.println("User Controller - Get User By Employee Role And Page");
-		return userService.getUserInRange(page, size);
+	@GetMapping("/{type}/{page}/{size}")
+	public ResponseEntity<Object> getListUsers(@PathVariable String type, @PathVariable int page,
+			@PathVariable int size) {
+		System.out.println("User Controller - Get Users By Type In Range");
+		return ResponseEntity.status(200).body(userService.getUserInRange(type, page, size));
+	}
+
+	@DeleteMapping("/reset-service")
+	public ResponseEntity<Object> resetService() {
+		System.out.println("User Controller - Reset Service");
+		userService.resetService();
+		return ResponseEntity.status(200).body(new String("Reset Service Success"));
 	}
 }

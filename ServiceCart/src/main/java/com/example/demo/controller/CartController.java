@@ -41,5 +41,13 @@ public class CartController {
 	public ResponseEntity<Object> getCartByID(@RequestBody Cart cart) {
 		return ResponseEntity.status(200).body(cartService.getCartByID(cart));
 	}
+	
+	@PostMapping("/id-user")
+	public  ResponseEntity<Object> getCartByUserId(@RequestBody Cart cart) {
+		//TODO: process POST request
+		System.out.println("Cart Controller - Get Cart By User ID");
+		return ResponseEntity.status(200).body(cartService.getCartByUserID(cart));
+	}
+	
 
 }
