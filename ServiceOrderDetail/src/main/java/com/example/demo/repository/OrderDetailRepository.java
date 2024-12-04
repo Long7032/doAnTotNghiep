@@ -28,4 +28,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, IDOrde
 	@Query("DELETE FROM OrderDetail od WHERE od.idOrder = ?1")
 	public void deleteAllOrderDetailByOrderID(String id);
 
+	@Transactional
+	@Query("SELECT od.idProduct, SUM(od.quantity) AS totalQuantity FROM OrderDetail od GROUP BY od.idProduct ORDER BY totalQuantity DESC")
+	public List<Object[]> getTopProductBestSelling();
 }

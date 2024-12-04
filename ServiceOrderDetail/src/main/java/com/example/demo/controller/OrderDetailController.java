@@ -54,12 +54,18 @@ public class OrderDetailController {
 		orderDetailService.resetService();
 		return ResponseEntity.status(200).body(new String("Reset Service Success"));
 	}
+
 	@PostMapping("/calculator")
 	public ResponseEntity<Object> calculatorOrder(@RequestBody OrderDetail orderDetail) {
-		//TODO: process POST request
+		// TODO: process POST request
 		System.out.println("Order Detail - Calculator Order");
 		return ResponseEntity.status(200).body(orderDetailService.calculatorOrder(orderDetail));
 	}
-	
+
+	@GetMapping("/get-top-best-selling")
+	public ResponseEntity<Object> getTopProductBestSelling() {
+		System.out.println("Order Detail - Get Top Product Best Selling");
+		return ResponseEntity.status(200).body(orderDetailService.getTopProductBestSelling());
+	}
 
 }

@@ -49,4 +49,9 @@ public class OrderDetailService {
 		System.out.println("Order Detail Service - Calculator Order");
 		return orderDetailRepository.calculatorOrder(orderDetail.getIdOrder());
 	}
+	
+	public List<Object[]> getTopProductBestSelling(){
+		System.out.println("Order Detail Service - Get Top Product Best Selling");
+		return orderDetailRepository.getTopProductBestSelling();
+	}
 }
