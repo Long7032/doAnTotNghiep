@@ -3,9 +3,11 @@ package com.example.demo.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.example.demo.entity.IDPromotionProduct;
 import com.example.demo.entity.PromotionProduct;
@@ -28,4 +30,22 @@ public interface PromotionProductRepository extends JpaRepository<PromotionProdu
 	@Transactional
 	@Query("UPDATE PromotionProduct pp SET pp.status = 'inactive' WHERE pp.timeEnd <= ?1")
 	void updateStatusInactive(LocalDateTime now);
+
+	@Transactional
+	@Query("SELECT pp FROM PromotionProduct pp WHERE pp.status = ?1")
+	public List<PromotionProduct> getPromotionByStatusInRange(String status, Pageable page);
+
+	@Transactional
+	@Query("SELECT pp FROM PromotionProduct pp")
+	public List<PromotionProduct> getPromotionInRange(Pageable page);
+
+	@Transactional
+	@Query("SELECT pp FROM PromotionProduct pp WHERE pp.name LIKE %:name% AND pp.status = :status")
+	public List<PromotionProduct> getPromotionByNameAndStatusInRange(@Param("name") String name,
+			@Param("status") String status, Pageable page);
+
+	@Transactional
+	@Query("SELECT pp FROM PromotionProduct pp WHERE pp.name LIKE %:name%")
+	public List<PromotionProduct> getPromotionByNameInRange(@Param("name") String name, Pageable page);
+
 }

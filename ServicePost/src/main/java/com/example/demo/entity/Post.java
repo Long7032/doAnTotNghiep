@@ -34,7 +34,7 @@ public class Post {
 	protected void onCreate() {
 
 		if (timeCreate == null) {
-			timeCreate = LocalDateTime.now();// Or Inactive
+			timeCreate = LocalDateTime.now();
 		}
 		
 		if(status == null) {

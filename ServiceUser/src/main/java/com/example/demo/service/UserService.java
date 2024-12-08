@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -36,12 +36,12 @@ public class UserService {
 		userRepository.deleteAll();
 	}
 
-	public Optional<User> deleteUser(User user) {
+	public User deleteUser(User user) {
 		System.out.println("User Service - Delete User");
 
 		userRepository.deleteById(user.getId());
 		// Get User By ID And Check User Deleted
-		return userRepository.findById(user.getId());
+		return userRepository.findById(user.getId()).orElseThrow();
 	}
 
 	public User updateUser(User user) {
@@ -126,17 +126,43 @@ public class UserService {
 
 	}
 
-	public User getUserByEmail(String email) {
-		System.out.println("User Service -  Get Users By Email");
-		System.out.println(email);
-		User user = null;
-		user = userRepository.getUser(email);
-		return user;
+	public List<User> getUserByNameInRange(String type, String name, int page, int size) {
+		System.out.println("User Service - Get Users By Name In Range");
+		System.out.println("Data Init: " + name + ": " + type);
+		Pageable pageable = PageRequest.of(page - 1, size);
+		List<User> users = new ArrayList<User>();
+
+		try {
+			users = userRepository.getUsersByNameInRange(name, type, pageable);
+			System.out.println(users);
+		} catch (Exception e) {
+			System.err.println("Error occurred while fetching users by name: " + e.getMessage());
+			// You can log more details or handle the exception in a way that suits your
+			// application
+		}
+
+		return users;
 	}
 
-	public Optional<User> getUser(String id) {
+	public List<User> getUserByName(String name, String type) {
+		System.out.println("User Service - Get Users By Name");
+		System.out.println("Data Init: " + name + ": " + type);
+		List<User> users = new ArrayList<User>();
+
+		try {
+			users = userRepository.getUsersByName(name, type);
+		} catch (Exception e) {
+			System.err.println("Error occurred while fetching users by name: " + e.getMessage());
+			// You can log more details or handle the exception in a way that suits your
+			// application
+		}
+
+		return users;
+	}
+
+	public User getUser(String id) {
 		System.out.println("User Service -  Get Users By ID");
-		return userRepository.findById(id);
+		return userRepository.findById(id).orElseThrow();
 	}
 
 	public List<Object[]> countUserByTime(User u) {

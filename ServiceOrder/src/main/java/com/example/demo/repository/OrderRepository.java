@@ -42,5 +42,22 @@ public interface OrderRepository extends JpaRepository<Order, IDOrder> {
 	@Query("SELECT DATE(o.dateTime),COUNT(o.idOrder) FROM Order o WHERE DATE(o.dateTime) = DATE(?1) GROUP BY DATE(o.dateTime)")
 	public List<Object[]> countOrderByDateTime(LocalDateTime time);
 	
+	//	=====	-----	Statistic	=====	-----
 	
+	//	Thống Kê Tổng Số Hóa Đơn Theo Thời Gian
+	@Transactional
+	@Query("SELECT DATE(o.dateTime), COUNT(o.idOrder) FROM Order o WHERE DATE(o.dateTime) BETWEEN DATE(?1) AND DATE(?2) GROUP BY DATE(o.dateTime)")
+	public List<Object[]> getTotalOrderByDate(LocalDateTime start, LocalDateTime end);
+	
+	// 	Thống Kê Tổng Số Hóa Đơn Trong Khoảng Thời Gian
+	@Transactional
+	@Query("SELECT COUNT(o.idOrder) FROM Order o WHERE DATE(o.dateTime) BETWEEN DATE(?1) AND DATE(?2)")
+	public List<Object[]> getTotalOrdersByDate(LocalDateTime start, LocalDateTime end);
+	
+	//	Thống Kê Tổng Số Hóa Đơn Theo Trạng Thái Theo Thời Gian
+	@Transactional
+	@Query("SELECT o.currentStatus, COUNT(o.idOrder) FROM Order o WHERE DATE(o.dateTime) BETWEEN DATE(?1) AND DATE(?2) GROUP BY o.currentStatus")
+	public List<Object[]> getOrderByStatusDate(LocalDateTime start, LocalDateTime end);
+	
+	//	Lấy Danh Sách Mã Hóa Đơn Theo Thời Gian
 }

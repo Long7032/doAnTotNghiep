@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,82 +29,168 @@ public class UserController {
 	public ResponseEntity<Object> getUser(@PathVariable String id) {
 		System.out.println("User Controller - Get User By ID");
 
-		User user = userService.getUser(id).orElseThrow();
-		if (user != null) {
-			return ResponseEntity.status(200).body(user);
+		try {
+			User user = userService.getUser(id);
+			if (user != null) {
+				return ResponseEntity.status(200).body(user);
+			} else {
+				return ResponseEntity.status(404).body("User Not Found");
+			}
+		} catch (Exception e) {
+			System.err.println("Error occurred while getting user: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
 		}
-		return ResponseEntity.status(400).body(new String("User Not Found"));
+	}
+
+	@GetMapping("/name/{type}/{name}/{page}/{size}")
+	public ResponseEntity<Object> getUsersByName(@PathVariable String type, @PathVariable String name,
+			@PathVariable int page, @PathVariable int size) {
+		System.out.println("User Controller - Get Users By Name");
+
+		try {
+			List<User> users = userService.getUserByNameInRange(type, name, page, size);
+			if (users != null && !users.isEmpty()) {
+				return ResponseEntity.status(200).body(users);
+			} else {
+				return ResponseEntity.status(404).body("User Not Found");
+			}
+		} catch (Exception e) {
+			System.err.println("Error occurred while getting users by name: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
 
 	@PostMapping("/")
 	public ResponseEntity<Object> saveUser(@RequestBody User user) {
 		System.out.println("User Controller - Save User");
-		// TODO: process POST request
-		if (userService.saveUser(user) == null) {
-			return ResponseEntity.status(400).body(new String("Fail"));
+
+		try {
+			User savedUser = userService.saveUser(user);
+			if (savedUser != null) {
+				return ResponseEntity.status(200).body(savedUser);
+			} else {
+				return ResponseEntity.status(400).body("Fail");
+			}
+		} catch (Exception e) {
+			System.err.println("Error occurred while saving user: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
 		}
-		return ResponseEntity.status(200).body(userService.saveUser(user));
 	}
 
 	@PutMapping("/")
 	public ResponseEntity<Object> updateUser(@RequestBody User user) {
 		System.out.println("User Controller - Update User");
-		System.out.println(user);
-		User rs = userService.updateUser(user);
-		if (userService.updateUser(user) == null) {
-			return ResponseEntity.status(400).body(new String("Fail"));
+
+		try {
+			User updatedUser = userService.updateUser(user);
+			if (updatedUser != null) {
+				return ResponseEntity.status(200).body(updatedUser);
+			} else {
+				return ResponseEntity.status(400).body("Fail");
+			}
+		} catch (Exception e) {
+			System.err.println("Error occurred while updating user: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
 		}
-		return ResponseEntity.status(200).body(rs);
 	}
 
 	@PatchMapping("/{type}")
 	public ResponseEntity<Object> updateRoleUser(@PathVariable String type, @RequestBody User user) {
 		System.out.println("User Controller - Update Role User");
-		System.out.println(user);
-		User rs = userService.updateRoleForUser(user, type);
-		if (rs == null) {
-			return ResponseEntity.status(500).body(new String("Fail"));
+
+		try {
+			User updatedUser = userService.updateRoleForUser(user, type);
+			if (updatedUser != null) {
+				return ResponseEntity.status(200).body(updatedUser);
+			} else {
+				return ResponseEntity.status(500).body("Fail");
+			}
+		} catch (Exception e) {
+			System.err.println("Error occurred while updating role for user: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
 		}
-		return ResponseEntity.status(200).body(rs);
 	}
 
 	@DeleteMapping("/")
 	public ResponseEntity<Object> deleteUser(@RequestBody User user) {
-		// TODO: process POST request
 		System.out.println("User Controller - Delete User");
-		return ResponseEntity.status(200).body(userService.deleteUser(user));
+
+		try {
+			User isDeleted = userService.deleteUser(user);
+			return ResponseEntity.status(200).body(isDeleted);
+		} catch (Exception e) {
+			System.err.println("Error occurred while deleting user: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
 
 	@GetMapping("/number/{type}")
 	public ResponseEntity<Object> getUsersByType(@PathVariable String type) {
 		System.out.println("User Controller - Get Users By Type");
-		return ResponseEntity.status(200).body(userService.getUsersByType(type));
+
+		try {
+			List<User> users = userService.getUsersByType(type);
+			return ResponseEntity.status(200).body(users);
+		} catch (Exception e) {
+			System.err.println("Error occurred while getting users by type: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
 
 	@GetMapping("/list/employee/{type}/{page}/{size}")
 	public ResponseEntity<Object> getUsersByRoleAndStatusInRange(@PathVariable String type, @PathVariable int page,
 			@PathVariable int size) {
 		System.out.println("User Controller - Get Users By Role Employee And Type In Range");
-		return ResponseEntity.status(200).body(userService.getUserByEmployeeRoleInRange(type, page, size));
+
+		try {
+			List<User> users = userService.getUserByEmployeeRoleInRange(type, page, size);
+			return ResponseEntity.status(200).body(users);
+		} catch (Exception e) {
+			System.err.println("Error occurred while getting users by role and status in range: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
 
 	@GetMapping("/{type}/{page}/{size}")
 	public ResponseEntity<Object> getListUsers(@PathVariable String type, @PathVariable int page,
 			@PathVariable int size) {
 		System.out.println("User Controller - Get Users By Type In Range");
-		return ResponseEntity.status(200).body(userService.getUserInRange(type, page, size));
+
+		try {
+			List<User> users = userService.getUserInRange(type, page, size);
+			return ResponseEntity.status(200).body(users);
+		} catch (Exception e) {
+			System.err.println("Error occurred while getting list of users: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
 
 	@PostMapping("/time-count-user")
 	public ResponseEntity<Object> countUserByTime(@RequestBody User u) {
 		System.out.println("User Controller - Count Users By Time");
-		return ResponseEntity.status(200).body(userService.countUserByTime(u));
+
+		try {
+			List<Object[]> userCount = userService.countUserByTime(u);
+			return ResponseEntity.status(200).body(userCount);
+		} catch (Exception e) {
+			System.err.println("Error occurred while counting users by time: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
 
+
+	
 	@DeleteMapping("/reset-service")
 	public ResponseEntity<Object> resetService() {
 		System.out.println("User Controller - Reset Service");
-		userService.resetService();
-		return ResponseEntity.status(200).body(new String("Reset Service Success"));
+
+		try {
+			userService.resetService();
+			return ResponseEntity.status(200).body("Reset Service Success");
+		} catch (Exception e) {
+			System.err.println("Error occurred while resetting service: " + e.getMessage());
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
+
 }
