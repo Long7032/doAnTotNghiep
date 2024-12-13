@@ -12,6 +12,6 @@ public interface PostRepository extends JpaRepository<Post, String> {
 	@Query("SELECT p FROM Post p")
 	public List<Post> getPostInRange(Pageable pageable);
 
-	@Query("SELECT p FROM Post P WHERE p.status = ?1")
-	public List<Post> getPostByStatusInRange(Pageable page, String status);
+//	@Query("SELECT p FROM Post P WHERE p.status = ?1")
+//	public List<Post> getPostByStatusInRange(Pageable page, String status);
 }

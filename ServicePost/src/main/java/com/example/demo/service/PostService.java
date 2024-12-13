@@ -80,10 +80,10 @@ public class PostService {
 				return postRepository.getPostInRange(pageable);
 			}
 			case "active": {
-				return postRepository.getPostByStatusInRange(pageable, type);
+//				return postRepository.getPostByStatusInRange(pageable, type);
 			}
 			case "inactive": {
-				return postRepository.getPostByStatusInRange(pageable, type);
+//				return postRepository.getPostByStatusInRange(pageable, type);
 			}
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + type);

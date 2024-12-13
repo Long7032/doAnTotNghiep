@@ -15,6 +15,8 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "category_id")
 	private String id;
+	@Column(name = "category_image")
+	private String image;
 	@Column(name = "category_name", nullable = false, unique = true)
 	private String name;
 	@Column(name = "category_status")
@@ -32,9 +34,10 @@ public class Category {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Category(String id, String name, String status) {
+	public Category(String id, String image, String name, String status) {
 		super();
 		this.id = id;
+		this.image = image;
 		this.name = name;
 		this.status = status;
 	}
@@ -47,6 +50,14 @@ public class Category {
 		this.id = id;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -55,22 +66,17 @@ public class Category {
 		this.name = name;
 	}
 
-	public Category(String name) {
-		super();
-		this.name = name;
-	}
-
-	public final String getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public final void setStatus(String status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", status=" + status + "]";
+		return "Category [id=" + id + ", image=" + image + ", name=" + name + ", status=" + status + "]";
 	}
 
 }
