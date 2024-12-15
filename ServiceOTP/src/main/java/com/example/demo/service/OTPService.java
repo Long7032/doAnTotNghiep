@@ -38,21 +38,25 @@ public class OTPService {
 			// TODO: handle exception
 			return "OTP has been sent. Please try again after 10 minutes.";
 		}
-	return "Send OTP Success";
+		return "Send OTP Success";
 	}
 
 	public String checkingOTP(String email, String otp) {
-		OTP o = null;
-		o = otpRepository.findOTP(email);
-		if(o != null) {
-			String rs = "OTP Invalid";
-			if (o.getMessage().equalsIgnoreCase(otp)) {
-				rs = "OTP Valid";
-				otpRepository.delete(o);
+		try {
+			OTP o = otpRepository.findOTP(email);
+			if (o != null) {
+				String rs = "OTP Invalid";
+				if (o.getMessage().equalsIgnoreCase(otp)) {
+					rs = "OTP Valid";
+					otpRepository.delete(o);
+				}
+				return rs;
 			}
-			return rs;
+			return "OTP Expired";
+		} catch (Exception e) {
+			System.err.println("An error occurred while checking OTP: " + e.getMessage());
+			return "An error occurred while processing OTP. Please try again later.";
 		}
-		return "OTP Expired";
 	}
 
 	public void sendOTPByEmail(String toEmail, String otp) throws ParseException {
@@ -66,6 +70,17 @@ public class OTPService {
 		mailSender.send(message);
 	}
 
+	public void sendMessage(String toEmail, String content) {
+		SimpleMailMessage message = new SimpleMailMessage();
+
+		message.setTo(toEmail);
+		message.setSubject("Xác thực OTP");
+		message.setText(content);
+		message.setFrom("gaming@gmail.com");
+
+		mailSender.send(message);
+	}
+	
 	public List<OTP> getOTPs() {
 		return otpRepository.findAll();
 	}

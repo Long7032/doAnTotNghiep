@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,56 +24,77 @@ public class AccountService {
 		try {
 			return accountRepository.save(account);
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.getMessage());
+			System.err.println("An error occurred while saving the account: " + e.getMessage());
+			return null;
 		}
-		return null;
 	}
 
 	public List<Account> getAccounts() {
 		System.out.println("Account Service - Get All Accounts");
-		return accountRepository.findAll();
+		try {
+			return accountRepository.findAll();
+		} catch (Exception e) {
+			System.err.println("An error occurred while getting all accounts: " + e.getMessage());
+			return new ArrayList<>();
+		}
 	}
 
 	public Account getAccount(Account account) {
 		System.out.println("Account Service - Get Account By Email And Password");
-		Account rs = null;
-		rs = accountRepository.getAccount(account.getUserName());
-		if (passwordEncoder.matches(account.getPassword(), rs.getPassword())) {
-			return rs;
+		try {
+			Account rs = accountRepository.getAccount(account.getUserName());
+			if (passwordEncoder.matches(account.getPassword(), rs.getPassword())) {
+				return rs;
+			}
+		} catch (Exception e) {
+			System.err.println("An error occurred while getting the account: " + e.getMessage());
 		}
 		return null;
 	}
 
 	public Account checkAccount(Account account) {
 		System.out.println("Account Service - Check Account");
-//		Account rs = null;
-		return accountRepository.getAccount(account.getUserName());
+		try {
+			return accountRepository.getAccount(account.getUserName());
+		} catch (Exception e) {
+			System.err.println("An error occurred while checking the account: " + e.getMessage());
+			return null;
+		}
 	}
-	
+
 	public Account updateAccountByType(String option, Account account) {
 		System.out.println("Account Service - Update Account By Type");
-		Account rs = accountRepository.findById(account.getIdUser()).orElseThrow();
-		switch (option) {
-		case "all": {
-			rs.setUserName(account.getUserName());
-			String encodedPassword = passwordEncoder.encode(account.getPassword());
-			account.setPassword(encodedPassword);
-			break;
-		}
-		case "email": {
-			rs.setUserName(account.getUserName());
-			break;
-		}
-		case "password": {
-			String encodedPassword = passwordEncoder.encode(account.getPassword());
-			account.setPassword(encodedPassword);
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + option);
-		}
+		try {
+			Account rs = accountRepository.getAccount(account.getUserName());
 
-		return accountRepository.saveAndFlush(rs);
+			switch (option) {
+			case "all": {
+				rs.setUserName(account.getUserName());
+				String encodedPassword = passwordEncoder.encode(account.getPassword());
+				rs.setPassword(encodedPassword);
+				break;
+			}
+			case "email": {
+				rs.setUserName(account.getUserName());
+				break;
+			}
+			case "password": {
+				String encodedPassword = passwordEncoder.encode(account.getPassword());
+				rs.setPassword(encodedPassword);
+				break;
+			}
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + option);
+			}
+
+			return accountRepository.saveAndFlush(rs);
+		} catch (IllegalArgumentException e) {
+			System.err.println("Invalid option: " + e.getMessage());
+		} catch (Exception e) {
+			System.err.println("An error occurred while updating account: " + e.getMessage());
+			throw e;
+		}
+		return null;
 	}
+
 }

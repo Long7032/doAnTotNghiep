@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,59 +20,68 @@ public class EmployeeService {
 
 	public Employee saveEmployee(Employee employee) {
 		System.out.println("Employee Service - Save Employee");
-		// Generate ID Employee Automatic
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
-//
-//		SimpleDateFormat sdf1 = new SimpleDateFormat("HHmmss");
-//
-//		Random random = new Random();
-//		int randomValue = 100000 + random.nextInt(900000);
-//
-//		String id = sdf.format(new Date()) + String.valueOf(randomValue) + sdf1.format(new Date());
-//
-//		employee.setId(id);
 		Employee rs = null;
 		try {
 			employee.setHiredDate(LocalDateTime.now());
 			rs = employeeRepository.save(employee);
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.getMessage());
+			System.err.println("Error saving employee: " + e.getMessage());
 		}
-
 		return rs;
 	}
 
 	public List<Employee> getEmployeesByPage(int page, int size) {
-		Pageable pageable = PageRequest.of(page - 1, size);
-		return employeeRepository.getListEmployeeByPage(pageable);
+		try {
+			Pageable pageable = PageRequest.of(page - 1, size);
+			return employeeRepository.getListEmployeeByPage(pageable);
+		} catch (Exception e) {
+			System.err.println("Error retrieving employees by page: " + e.getMessage());
+			return new ArrayList<>();
+		}
 	}
 
-	public Optional<Employee> getEmployeeByID(String id) {
-		return employeeRepository.findById(id);
+	public Employee getEmployeeByID(String id) {
+		try {
+			return employeeRepository.findById(id).orElseThrow();
+		} catch (Exception e) {
+			System.err.println("Error retrieving employee by ID: " + e.getMessage());
+			return null;
+		}
 	}
 
 	public List<Employee> getEmployees() {
-		return employeeRepository.findAll();
+		try {
+			return employeeRepository.findAll();
+		} catch (Exception e) {
+			System.err.println("Error retrieving all employees: " + e.getMessage());
+			return new ArrayList<>();
+		}
 	}
 
 	public boolean deleteEmployee(String id) {
-		Employee e = null;
-		e = employeeRepository.findById(id).orElseThrow();
-		if (e != null) {
+		try {
+			employeeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Employee not found"));
 			employeeRepository.deleteById(id);
 			return true;
+		} catch (NoSuchElementException e) {
+			System.err.println("Employee not found: " + e.getMessage());
+			return false;
+		} catch (Exception e) {
+			System.err.println("Error deleting employee: " + e.getMessage());
+			return false;
 		}
-		return false;
 	}
 
 	public boolean updateEmployee(Employee e) {
 		System.out.println("Employee Service Update");
 		System.out.println("Data Init: " + e);
-
-		if (e != null) {
-			employeeRepository.saveAndFlush(e);
-			return true;
+		try {
+			if (e != null) {
+				employeeRepository.saveAndFlush(e);
+				return true;
+			}
+		} catch (Exception ex) {
+			System.err.println("Error updating employee: " + ex.getMessage());
 		}
 		return false;
 	}

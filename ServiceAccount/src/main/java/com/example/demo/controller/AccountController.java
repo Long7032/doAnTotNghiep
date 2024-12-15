@@ -27,44 +27,77 @@ public class AccountController {
 	public ResponseEntity<Object> saveAccount(@RequestBody Account account) {
 		// TODO: process POST request
 		System.out.println("Account Controller - Save Account: " + account);
-		Account rs = accountService.saveAccount(account);
-		return ResponseEntity.status(200).body(rs);
+		try {
+			Account rs = accountService.saveAccount(account);
+			if (rs == null) {
+				return ResponseEntity.status(500).body("Failed to save account. Please try again later.");
+			}
+			return ResponseEntity.status(200).body(rs);
+		} catch (Exception e) {
+			System.err.println("An error occurred while saving the account: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
+		}
 	}
-	
+
 	@PostMapping("/check")
 	public ResponseEntity<Object> checkAccount(@RequestBody Account account) {
 		// TODO: process POST request
 		System.out.println("Account Controller - Check Account: " + account);
-		Account rs = accountService.checkAccount(account);
-		if (rs == null) {
+		try {
+			Account rs = accountService.checkAccount(account);
+			if (rs == null) {
+				return ResponseEntity.status(400).body("Account Not Found");
+			}
 			return ResponseEntity.status(200).body(rs);
+		} catch (Exception e) {
+			System.err.println("An error occurred while checking the account: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
 		}
-		return ResponseEntity.status(400).body(rs);
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<Object> getAccount(@RequestBody Account account) {
 		System.out.println("Account Controller - Login - Data: " + account);
-		Account rs = accountService.getAccount(account);
-		if (rs == null) {
-			return ResponseEntity.status(401).body(new String("Account Not Found !!!"));
+		try {
+			Account rs = accountService.getAccount(account);
+			if (rs == null) {
+				return ResponseEntity.status(401).body("Account Not Found !!!");
+			}
+			return ResponseEntity.status(200).body(rs);
+		} catch (Exception e) {
+			System.err.println("An error occurred while logging in: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
 		}
-		return ResponseEntity.status(200).body(rs);
 	}
 
 	@GetMapping("/")
-	public List<Account> getAccounts() {
-		return accountService.getAccounts();
+	public ResponseEntity<Object> getAccounts() {
+		try {
+			List<Account> accounts = accountService.getAccounts();
+			return ResponseEntity.status(200).body(accounts);
+		} catch (Exception e) {
+			System.err.println("An error occurred while getting accounts: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
+		}
 	}
 
 	@PutMapping("/{type}")
 	public ResponseEntity<Object> updateAccountByType(@PathVariable String type, @RequestBody Account account) {
 		System.out.println("Account Controller - Update Account By Type - Data: " + account);
-		Account rs = accountService.updateAccountByType(type, account);
-		System.out.println(rs);
-		if (rs == null) {
-			return ResponseEntity.status(401).body(new String("Account Not Found !!!"));
+		try {
+			Account rs = accountService.updateAccountByType(type, account);
+			System.out.println(rs);
+			if (rs == null) {
+				return ResponseEntity.status(401).body("Account Not Found !!!");
+			}
+			return ResponseEntity.status(200).body(rs);
+		} catch (IllegalArgumentException e) {
+			System.err.println("Invalid option: " + e.getMessage());
+			return ResponseEntity.status(400).body("Invalid option provided.");
+		} catch (Exception e) {
+			System.err.println("An error occurred while updating account: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
 		}
-		return ResponseEntity.status(200).body(rs);
 	}
+
 }

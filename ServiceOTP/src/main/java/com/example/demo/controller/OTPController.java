@@ -28,17 +28,41 @@ public class OTPController {
 	}
 
 	@PostMapping("/{email}")
-	public ResponseEntity<Object> generateOTP(@PathVariable String email) throws ParseException {
-
-		return ResponseEntity.status(200).body(otpService.generateOTP(email));
+	public ResponseEntity<Object> generateOTP(@PathVariable String email) {
+		try {
+			return ResponseEntity.status(200).body(otpService.generateOTP(email));
+		} catch (ParseException e) {
+			System.err.println("An error occurred while generating OTP: " + e.getMessage());
+			return ResponseEntity.status(400).body("Invalid request format");
+		} catch (Exception e) {
+			System.err.println("An unexpected error occurred: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
+		}
 	}
 
 	@PostMapping("/check")
-	public String checkOTP(@RequestBody OTP otp) {
-		System.out.println(otp);
-		String rsCheckOTP = otpService.checkingOTP(otp.getEmailUser(), otp.getMessage());
-		System.out.println(rsCheckOTP);
-		return rsCheckOTP;
+	public ResponseEntity<Object> checkOTP(@RequestBody OTP otp) {
+		try {
+			System.out.println(otp);
+			String rsCheckOTP = otpService.checkingOTP(otp.getEmailUser(), otp.getMessage());
+			System.out.println(rsCheckOTP);
+			return ResponseEntity.status(200).body(rsCheckOTP);
+		} catch (Exception e) {
+			System.err.println("An error occurred while checking OTP: " + e.getMessage());
+			return ResponseEntity.status(500)
+					.body("An error occurred while processing your request. Please try again later.");
+		}
 	}
-
+//	@PostMapping("/order/{email}")
+	public ResponseEntity<Object> sendToEmail(@PathVariable String email) {
+		try {
+			return ResponseEntity.status(200).body(otpService.generateOTP(email));
+		} catch (ParseException e) {
+			System.err.println("An error occurred while generating OTP: " + e.getMessage());
+			return ResponseEntity.status(400).body("Invalid request format");
+		} catch (Exception e) {
+			System.err.println("An unexpected error occurred: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
+		}
+	}
 }

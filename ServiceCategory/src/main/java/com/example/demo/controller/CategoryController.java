@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,21 @@ public class CategoryController {
 		return ResponseEntity.status(200).body(rs);
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> getCategoryByCategoryID(@PathVariable String id) {
+		System.out.println("Category Controller - Get Category By Category ID");
+		try {
+			Category rs = categoryService.getCategoryByCategoryID(id);
+			return ResponseEntity.status(200).body(rs);
+		} catch (NoSuchElementException e) {
+			System.err.println("Category not found: " + e.getMessage());
+			return ResponseEntity.status(404).body("Category not found");
+		} catch (Exception e) {
+			System.err.println("An error occurred while getting the category by ID: " + e.getMessage());
+			return ResponseEntity.status(500).body("An internal server error occurred. Please try again later.");
+		}
+	}
+
 	@PostMapping("/data-sample")
 	public ResponseEntity<Object> saveDataSample(@RequestBody List<Category> category) {
 		System.out.println("Category Controller - Get Category By ID");
@@ -39,11 +55,11 @@ public class CategoryController {
 		return ResponseEntity.status(200).body(new String("OK"));
 	}
 
-	@PostMapping("/id")
-	public ResponseEntity<Object> getCaregoryByID(@RequestBody Category category) {
-		System.out.println("Category Controller - Get Category By ID");
-		return ResponseEntity.status(200).body(categoryService.getCategoryByID(category.getId()));
-	}
+//	@PostMapping("/id")
+//	public ResponseEntity<Object> getCaregoryByID(@RequestBody Category category) {
+//		System.out.println("Category Controller - Get Category By ID");
+//		return ResponseEntity.status(200).body(categoryService.getCategoryByID(category.getId()));
+//	}
 
 	@GetMapping("/{page}/{size}")
 	public ResponseEntity<Object> getCaregoriesByPage(@PathVariable int page, @PathVariable int size) {

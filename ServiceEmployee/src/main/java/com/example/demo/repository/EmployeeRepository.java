@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.example.demo.entity.Employee;
 
-public interface EmployeeRepository extends JpaRepository<Employee, String>{
+import jakarta.transaction.Transactional;
 
+public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
+	@Transactional
 	@Query("Select e From Employee e")
 	public List<Employee> getListEmployeeByPage(Pageable pageable);
 }
